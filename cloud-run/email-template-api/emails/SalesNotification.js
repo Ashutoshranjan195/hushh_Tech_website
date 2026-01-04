@@ -39,7 +39,7 @@ export function SalesNotification(input = {}) {
   const fontFamily = "'Plus Jakarta Sans','Google Sans',Roboto,Arial,Helvetica,sans-serif";
 
   // ---- URLs ----
-  const logoUrl = escapeHtml(d.logoUrl ?? "https://ibsisfnjxeowvdtvgzff.supabase.co/storage/v1/object/public/assets/hushh-logo.png");
+  const logoUrl = escapeHtml(d.logoUrl ?? "https://www.hushhtech.com/images/hushh-logo-email.png");
   const siteUrl = escapeHtml(d.siteUrl ?? "https://www.hushhtech.com/");
   const calendlyUrl = escapeHtml(d.calendlyUrl ?? "https://calendly.com/hushh");
   const privacyUrl = escapeHtml(d.privacyUrl ?? "https://www.hushhtech.com/");
