@@ -1,109 +1,102 @@
-# Hushh Folio - Backend Deployment Guide
+# Hushh Folio - Firebase Deployment Guide
 
-## ✅ Deployment Complete!
+## Overview
 
-All 3 Supabase Edge Functions have been deployed and configured successfully.
+This guide explains how to deploy portfolios to Firebase Hosting for https://hushh-folio.web.app/
 
-## Deployed Functions
+## Architecture
 
-| Function | Status | Description |
-|----------|--------|-------------|
-| `portfolio-generate` | ✅ ACTIVE | Uses Gemini 1.5 Pro to generate portfolio content from interview answers |
-| `portfolio-photo-enhance` | ✅ ACTIVE | Uses GCP Imagen API for AI photo enhancement |
-| `portfolio-slug-check` | ✅ ACTIVE | Checks URL slug availability and generates suggestions |
+1. **Frontend (Hushh AI App)**: 8-step wizard for portfolio creation
+2. **Supabase Edge Function**: `portfolio-deploy` generates HTML and updates DB
+3. **Firebase Hosting**: Serves static portfolio pages
 
-## Function Endpoints
+## Files Created
 
-Base URL: `https://ibsisfnjxeowvdtvgzff.supabase.co/functions/v1`
+- `firebase/hushh-folio/firebase.json` - Firebase hosting configuration
+- `firebase/hushh-folio/.firebaserc` - Firebase project settings
+- `supabase/functions/portfolio-deploy/index.ts` - Deploy edge function
+- `supabase/functions/portfolio-deploy/deno.json` - Deno config
 
-- **Generate Portfolio**: `POST /portfolio-generate`
-- **Enhance Photo**: `POST /portfolio-photo-enhance`
-- **Check Slug**: `POST /portfolio-slug-check`
+## Deployment Steps
 
-## Configured Secrets
-
-| Secret | Status | Description |
-|--------|--------|-------------|
-| `GEMINI_API_KEY` | ✅ Set | Google Gemini API key for AI content generation |
-| `GCP_PROJECT_ID` | ✅ Set | `hushone-app` - GCP project for Imagen API |
-| `GOOGLE_ACCESS_TOKEN` | ✅ Set | OAuth token for GCP API access |
-
-## API Usage Examples
-
-### 1. Generate Portfolio Content
+### Step 1: Deploy Edge Function to Supabase
 
 ```bash
-curl -X POST "https://ibsisfnjxeowvdtvgzff.supabase.co/functions/v1/portfolio-generate" \
+# Using Supabase Management API
+curl -X POST "https://api.supabase.com/v1/projects/docsqanvndfzxttqbgoi/functions" \
+  -H "Authorization: Bearer YOUR_SUPABASE_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_SUPABASE_TOKEN" \
-  -d '{
-    "portfolio_id": "uuid-here",
-    "name": "John Doe",
-    "interview_answers": [
-      {"question_id": 1, "question_text": "What do you do?", "answer": "Software Engineer"}
-    ]
-  }'
+  -d '{"slug": "portfolio-deploy", "verify_jwt": true}'
 ```
 
-### 2. Check Slug Availability
+Or via Supabase Dashboard:
+1. Go to https://supabase.com/dashboard/project/docsqanvndfzxttqbgoi/functions
+2. Click "Deploy New Function"
+3. Upload `supabase/functions/portfolio-deploy/`
+
+### Step 2: Setup Firebase Project
 
 ```bash
-curl -X POST "https://ibsisfnjxeowvdtvgzff.supabase.co/functions/v1/portfolio-slug-check" \
-  -H "Content-Type: application/json" \
-  -d '{"slug": "john-doe"}'
+# Install Firebase CLI
+npm install -g firebase-tools
+
+# Login to Firebase
+firebase login
+
+# Initialize Firebase in the project
+cd firebase/hushh-folio
+firebase use hushh-folio
 ```
 
-### 3. Enhance Photo
+### Step 3: Deploy Initial Firebase Site
 
 ```bash
-curl -X POST "https://ibsisfnjxeowvdtvgzff.supabase.co/functions/v1/portfolio-photo-enhance" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_SUPABASE_TOKEN" \
-  -d '{
-    "portfolio_id": "uuid-here",
-    "image_url": "https://example.com/photo.jpg",
-    "enhancement_type": "professional"
-  }'
+cd firebase/hushh-folio
+
+# Create a simple index.html for root
+mkdir -p dist
+echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Hushh Folio</title></head><body><h1>Hushh Folio</h1><p>Create your portfolio at hushh.ai</p></body></html>' > dist/index.html
+
+# Deploy to Firebase
+firebase deploy --only hosting
 ```
 
-## Redeployment Commands
+### Step 4: Database Schema
 
-If you need to redeploy functions:
+Ensure portfolios table has these columns:
+- `status` VARCHAR(50) - 'draft' or 'published'
+- `is_published` BOOLEAN
+- `firebase_url` TEXT
+- `generated_html` TEXT
+- `published_at` TIMESTAMPTZ
+- `persona_id` VARCHAR(50)
+- `custom_styling` JSONB
 
-```bash
-# Deploy all portfolio functions
-npx supabase functions deploy portfolio-generate --no-verify-jwt --project-ref ibsisfnjxeowvdtvgzff
-npx supabase functions deploy portfolio-photo-enhance --no-verify-jwt --project-ref ibsisfnjxeowvdtvgzff
-npx supabase functions deploy portfolio-slug-check --no-verify-jwt --project-ref ibsisfnjxeowvdtvgzff
-```
+### Step 5: Test the Flow
 
-## Updating Secrets
+1. Go to https://hushh.ai/hushh-ai/portfolio
+2. Complete 8-step wizard
+3. Click "Publish Portfolio"
+4. Edge function generates HTML and stores in DB
+5. Portfolio URL: https://hushh-folio.web.app/{slug}
 
-```bash
-# Update Gemini API key
-npx supabase secrets set GEMINI_API_KEY="new-key-here" --project-ref ibsisfnjxeowvdtvgzff
+## Current Status
 
-# Update GCP project
-npx supabase secrets set GCP_PROJECT_ID="project-id" --project-ref ibsisfnjxeowvdtvgzff
-```
+- [x] Firebase config files created
+- [x] Portfolio-deploy edge function created
+- [ ] Edge function deployment (needs Supabase login)
+- [ ] Firebase initial deployment (needs firebase login)
+- [ ] Test end-to-end flow
 
-## Viewing Logs
+## Notes
 
-```bash
-# View function logs
-npx supabase functions logs portfolio-generate --project-ref ibsisfnjxeowvdtvgzff
-```
+The current flow stores generated HTML in Supabase. For full Firebase hosting:
+1. Use Firebase Admin SDK in the edge function
+2. OR create a Cloud Function that syncs from Supabase to Firebase
 
-## Database Tables Required
+## Alternative: Vercel Hosting
 
-Ensure these tables exist (from migration `20260107300000_create_portfolio_tables.sql`):
-- `portfolios` - Main portfolio data
-- `portfolio_interview` - Interview Q&A storage
-- `portfolio_sections` - Custom sections
-- `portfolio_skills` - Skills list
+Since hushh.ai is on Vercel, portfolios could be served from:
+- hushh.ai/p/{slug}
 
----
-
-**Deployed by**: Cline AI Assistant  
-**Date**: January 7, 2026  
-**Status**: ✅ Production Ready
+This would avoid Firebase entirely and use Next.js dynamic routes.
