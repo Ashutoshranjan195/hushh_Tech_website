@@ -287,11 +287,20 @@ GEMINI 3 PRO ADVANTAGES:
 IMPORTANT: You are having a LIVE conversation. Be natural, responsive, and human.
 After a few exchanges, ask if they're ready to upload their resume for analysis.`;
 
+      // Log selected language for debugging
+      console.log('[Vision] Starting session with language:', selectedLanguage.name, selectedLanguage.voiceCode);
+
       const sessionPromise = ai.live.connect({
         model: 'gemini-2.5-flash-native-audio-preview-12-2025',
         config: {
           responseModalities: [Modality.AUDIO],
-          speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: coach.voiceName } } },
+          speechConfig: { 
+            voiceConfig: { 
+              prebuiltVoiceConfig: { voiceName: coach.voiceName } 
+            },
+            // Set the language code for speech output
+            languageCode: selectedLanguage.voiceCode,
+          },
           systemInstruction: visionSystemInstruction,
           inputAudioTranscription: {},
           outputAudioTranscription: {},
