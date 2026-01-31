@@ -100,3 +100,4 @@ jobs:
           echo "- 🔒 Security scan" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Ready to merge!** (No human review required)" >> $GITHUB_STEP_SUMMARY
+
