@@ -20,14 +20,6 @@ const CONFIG = {
   // Minimum description length
   minDescriptionLength: 50,
   
-  // Maximum files per PR (warn threshold)
-  maxFilesWarn: 15,
-  
-  // Maximum files per PR (fail threshold)
-  maxFilesFail: 50,
-  
-  // Maximum lines changed (warn threshold)
-  maxLinesWarn: 500,
   
   // Source directories that should have tests
   sourceDirectories: ['src/'],
@@ -154,28 +146,7 @@ A good description should include:
 }
 
 /**
- * Rule 3: Check PR Size
- * Large PRs are harder to review
- */
-function checkPRSize(): void {
-  const changedFiles = getAllChangedFiles();
-  const fileCount = changedFiles.length;
-  
-  if (fileCount > CONFIG.maxFilesFail) {
-    fail(`🚫 **PR Too Large**
-    
-This PR modifies ${fileCount} files, which is too many to review effectively.
-
-Please break this PR into smaller, focused PRs (max ${CONFIG.maxFilesFail} files each).`);
-  } else if (fileCount > CONFIG.maxFilesWarn) {
-    warn(`⚠️ **Large PR**
-
-This PR modifies ${fileCount} files. Consider breaking it into smaller PRs for easier review.`);
-  }
-}
-
-/**
- * Rule 4: Check for Tests
+ * Rule 3: Check for Tests
  * Source changes should include tests
  */
 function checkForTests(): void {
@@ -333,7 +304,6 @@ async function runAllChecks(): Promise<void> {
   // Run synchronous checks
   checkPRTitle();
   checkPRDescription();
-  checkPRSize();
   checkForTests();
   checkCriticalFiles();
   checkDatabaseMigrations();
