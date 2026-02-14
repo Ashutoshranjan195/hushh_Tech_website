@@ -10,7 +10,7 @@
  * On completion → navigates to /onboarding/step-1
  * Data is saved to Supabase `user_financial_data` table automatically.
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 import config from '../../resources/config/config';
@@ -22,14 +22,18 @@ export default function OnboardingFinancialLink() {
   const [userId, setUserId] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
   const [isReady, setIsReady] = useState(false);
+  const hasInitialized = useRef(false);
 
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Get authenticated user
+  // Get authenticated user — runs only once
   useEffect(() => {
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
     const getUser = async () => {
       if (!config.supabaseClient) {
         navigate('/login');
@@ -46,23 +50,27 @@ export default function OnboardingFinancialLink() {
       setUserEmail(user.email || undefined);
 
       // Check if user already completed financial link
-      const { data: financialData } = await config.supabaseClient
-        .from('user_financial_data')
-        .select('status')
-        .eq('user_id', user.id)
-        .single();
+      try {
+        const { data: financialData } = await config.supabaseClient
+          .from('user_financial_data')
+          .select('status')
+          .eq('user_id', user.id)
+          .single();
 
-      // If already completed, skip to step 1
-      if (financialData?.status === 'complete' || financialData?.status === 'partial') {
-        navigate('/onboarding/step-1', { replace: true });
-        return;
+        // If already completed, skip to step 1
+        if (financialData?.status === 'complete' || financialData?.status === 'partial') {
+          navigate('/onboarding/step-1', { replace: true });
+          return;
+        }
+      } catch {
+        // Table may not exist yet — continue anyway
       }
 
       setIsReady(true);
     };
 
     getUser();
-  }, [navigate]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handle financial verification complete → go to Step 1
   const handleContinue = (result: FinancialVerificationResult) => {

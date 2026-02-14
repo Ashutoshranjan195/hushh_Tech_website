@@ -91,6 +91,7 @@ export const usePlaidLinkHook = (userId: string, userEmail?: string): UsePlaidLi
   // Store access token in ref (not in state — it's sensitive)
   const accessTokenRef = useRef<string | null>(null);
   const assetPollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const hasInitializedRef = useRef(false);
 
   // =====================================================
   // Step 1: Create Link Token
@@ -117,12 +118,13 @@ export const usePlaidLinkHook = (userId: string, userEmail?: string): UsePlaidLi
     }
   }, [userId, userEmail]);
 
-  // Auto-initialize on mount
+  // Auto-initialize on mount — only once per hook instance
   useEffect(() => {
-    if (userId) {
+    if (userId && !hasInitializedRef.current) {
+      hasInitializedRef.current = true;
       initializeLinkToken();
     }
-  }, [initializeLinkToken]);
+  }, [userId, initializeLinkToken]);
 
   // =====================================================
   // Step 2 & 3: Plaid Link Success Handler
@@ -313,6 +315,7 @@ export const usePlaidLinkHook = (userId: string, userEmail?: string): UsePlaidLi
       productsAvailable: 0,
     });
     accessTokenRef.current = null;
+    hasInitializedRef.current = false;
     initializeLinkToken();
   }, [initializeLinkToken]);
 
