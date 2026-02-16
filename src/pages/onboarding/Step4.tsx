@@ -148,8 +148,8 @@ export default function OnboardingStep4() {
         // Always detect fresh GPS location in real-time every time user visits Step 6
       }
 
-      // ALWAYS detect GPS location in real-time (every page visit)
-      detectLocation(user.id);
+      // Don't auto-detect location on page load - let user trigger it with button
+      // This gives better UX and higher permission grant rate
     };
 
     getCurrentUser();
@@ -252,6 +252,20 @@ export default function OnboardingStep4() {
   const handleShowPermissionHelp = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowPermissionHelp(true);
+  };
+
+  // Handle user clicking "Detect My Location" button
+  const handleDetectLocation = async () => {
+    if (!userId) return;
+
+    // Now trigger GPS detection (will show browser permission popup)
+    await detectLocation(userId);
+  };
+
+  // Handle user skipping location detection
+  const handleSkipDetection = () => {
+    // Hide the CTA card and show manual selection
+    setLocationStatus('manual');
   };
 
   const handleContinue = async () => {
@@ -368,7 +382,66 @@ export default function OnboardingStep4() {
             <p className="text-slate-500 text-[14px] font-normal leading-relaxed">
               We need to know where you live and pay taxes to open your investment account.
             </p>
-            
+
+            {/* Location Detection Call-to-Action */}
+            {!locationStatus && !hasPreviousData && (
+              <div className="mt-6 p-5 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl">
+                <div className="flex items-start gap-4">
+                  {/* Location Icon */}
+                  <div className="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </div>
+
+                  {/* Text Content */}
+                  <div className="flex-1">
+                    <h3 className="text-base font-bold text-slate-900 mb-2">
+                      Auto-fill your country
+                    </h3>
+                    <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+                      We need your location to automatically fill in your country and region.
+                      This helps us comply with investment regulations and create your account faster.
+                    </p>
+
+                    {/* Detect Button */}
+                    <button
+                      onClick={handleDetectLocation}
+                      disabled={isDetectingLocation}
+                      className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 active:scale-[0.98] transition-all disabled:bg-blue-400 disabled:cursor-wait"
+                    >
+                      {isDetectingLocation ? (
+                        <>
+                          <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span>Detecting...</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 6v6l4 2"></path>
+                          </svg>
+                          <span>Detect My Location</span>
+                        </>
+                      )}
+                    </button>
+
+                    {/* Manual Option Link */}
+                    <button
+                      onClick={handleSkipDetection}
+                      className="mt-3 text-xs font-semibold text-slate-500 hover:text-slate-700 transition-colors"
+                    >
+                      Skip and select manually →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Persistent Location Status Card */}
             {locationStatus && (
               <div className={`mt-4 rounded-2xl border p-4 ${getStatusCardStyle(locationStatus)}`}>
@@ -423,8 +496,11 @@ export default function OnboardingStep4() {
             )}
           </div>
 
-          {/* Previous Data Info - Show when GPS denied/failed but we have old data */}
-          {hasPreviousData && (locationStatus === 'denied' || locationStatus === 'failed') && (
+          {/* Only show form card if user has taken action */}
+          {(locationStatus || hasPreviousData) && (
+            <>
+              {/* Previous Data Info - Show when GPS denied/failed but we have old data */}
+              {hasPreviousData && (locationStatus === 'denied' || locationStatus === 'failed') && (
             <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-2.5">
               <svg
                 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0"
@@ -525,6 +601,8 @@ export default function OnboardingStep4() {
               </div>
             )}
           </div>
+            </>
+          )}
         </main>
 
         {/* Fixed Footer - Hidden when main footer is visible */}
