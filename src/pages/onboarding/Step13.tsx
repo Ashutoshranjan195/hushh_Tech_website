@@ -418,7 +418,7 @@ function OnboardingStep13() {
   };
 
   const handleBack = () => {
-    navigate('/onboarding/verify');
+    navigate('/onboarding/step-12');
   };
 
   return (

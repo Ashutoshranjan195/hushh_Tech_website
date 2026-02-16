@@ -51,8 +51,8 @@ export default function OnboardingStep3() {
         })
         .eq('user_id', userId);
 
-      // Navigate to step 6
-      navigate('/onboarding/step-2');
+      // Navigate to step 4
+      navigate('/onboarding/step-4');
     } catch (error) {
       console.error('Error:', error);
     } finally {

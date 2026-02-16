@@ -212,7 +212,7 @@ export default function OnboardingStep4() {
         })
         .eq('user_id', userId);
 
-      navigate('/onboarding/step-3');
+      navigate('/onboarding/step-5');
     } catch (error) {
       console.error('Error:', error);
     } finally {

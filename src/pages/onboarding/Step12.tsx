@@ -332,7 +332,7 @@ function OnboardingStep12() {
       return;
     }
 
-    navigate('/onboarding/step-11');
+    navigate('/onboarding/step-13');
   };
 
   const handleContinue = () => {

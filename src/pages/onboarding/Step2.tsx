@@ -79,7 +79,7 @@ export default function OnboardingStep2() {
         })
         .eq('user_id', userId);
 
-      navigate('/onboarding/step-1');
+      navigate('/onboarding/step-3');
     } catch (error) {
       console.error('Error:', error);
     } finally {
@@ -101,7 +101,7 @@ export default function OnboardingStep2() {
         console.error('Error:', error);
       }
     }
-    navigate('/onboarding/step-1');
+    navigate('/onboarding/step-3');
   };
 
   const handleBack = () => {

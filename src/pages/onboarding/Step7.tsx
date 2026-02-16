@@ -104,7 +104,7 @@ export default function OnboardingStep7() {
       return;
     }
 
-    navigate('/onboarding/step-6');
+    navigate('/onboarding/step-8');
   };
 
   const handleBack = () => {

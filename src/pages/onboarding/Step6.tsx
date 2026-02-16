@@ -220,7 +220,7 @@ export default function OnboardingStep6() {
         })
         .eq('user_id', userId);
 
-      navigate('/onboarding/step-5');
+      navigate('/onboarding/step-7');
     } catch (error) {
       console.error('Error:', error);
     } finally {

@@ -308,7 +308,7 @@ function OnboardingStep11() {
       return;
     }
 
-    navigate('/onboarding/step-10');
+    navigate('/onboarding/step-12');
   };
 
   // Get units for a class

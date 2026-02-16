@@ -63,7 +63,7 @@ export default function OnboardingStep5() {
         })
         .eq('user_id', userId);
 
-      navigate('/onboarding/step-4');
+      navigate('/onboarding/step-6');
     } catch (error) {
       console.error('Error:', error);
     } finally {

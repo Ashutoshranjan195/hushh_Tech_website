@@ -705,7 +705,7 @@ function OnboardingStep8() {
       return;
     }
 
-    navigate('/onboarding/step-7');
+    navigate('/onboarding/step-9');
   };
 
   const handleBack = () => {

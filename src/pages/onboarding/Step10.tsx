@@ -45,7 +45,7 @@ function OnboardingStep10() {
       }
     }
 
-    navigate('/onboarding/step-9');
+    navigate('/onboarding/step-11');
   };
 
   const handleBack = () => {
