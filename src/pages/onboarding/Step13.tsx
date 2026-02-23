@@ -168,6 +168,7 @@ function OnboardingStep13() {
   const navigate = useNavigate();
   const isFooterVisible = useFooterVisibility();
   const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true); // Data fetch loading
   const [error, setError] = useState<string | null>(null);
   
   // Plaid auto-fill status message (shown as banner)
@@ -427,10 +428,11 @@ function OnboardingStep13() {
 
   useEffect(() => {
     const loadData = async () => {
-      if (!config.supabaseClient) return;
+      if (!config.supabaseClient) { setPageLoading(false); return; }
 
+      try {
       const { data: { user } } = await config.supabaseClient.auth.getUser();
-      if (!user) return;
+      if (!user) { setPageLoading(false); return; }
 
       const { data } = await config.supabaseClient
         .from('onboarding_data')
@@ -473,6 +475,11 @@ function OnboardingStep13() {
       const hasBankDataAlready = data?.bank_routing_number;
       if (!hasBankDataAlready) {
         await attemptPlaidAutoFill(user.id, dbHasBankName, dbHasCountry);
+      }
+      } catch (err) {
+        console.error('[Step13] Error loading data:', err);
+      } finally {
+        setPageLoading(false);
       }
     };
 
@@ -703,6 +710,25 @@ function OnboardingStep13() {
           Provide your banking information for investment transfers securely.
         </p>
 
+        {/* ─── Page Loading Shimmer ─── */}
+        {pageLoading && (
+          <div className="space-y-4 animate-pulse">
+            <div className="h-[120px] bg-gray-100 rounded-xl" />
+            <div className="space-y-0 rounded-[10px] overflow-hidden border border-gray-100">
+              {[1,2,3,4].map(i => <div key={i} className="h-[44px] bg-gray-50 border-b border-gray-100" />)}
+            </div>
+            <div className="space-y-0 rounded-[10px] overflow-hidden border border-gray-100">
+              {[1,2,3].map(i => <div key={i} className="h-[44px] bg-gray-50 border-b border-gray-100" />)}
+            </div>
+            <div className="flex justify-center pt-4">
+              <div className="w-10 h-10 border-4 border-gray-200 border-t-[#007AFF] rounded-full animate-spin" />
+            </div>
+            <p className="text-center text-[13px] text-[#8E8E93]">Loading your data...</p>
+          </div>
+        )}
+
+        {/* ─── Form Content (hidden while loading) ─── */}
+        {!pageLoading && <>
           {/* Error Message */}
           {error && (
             <div className="mx-5 mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
@@ -933,6 +959,7 @@ function OnboardingStep13() {
               Your data is encrypted with 256-bit SSL security.
             </p>
           </div>
+        </>}
         </main>
 
         {/* ═══ iOS Fixed Footer ═══ */}
