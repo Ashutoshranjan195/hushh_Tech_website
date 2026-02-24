@@ -1,6 +1,6 @@
 /**
  * HushhTechHeader — Reusable sticky header component
- * Glass-blur nav bar with Hushh logo, brand name, and help button.
+ * Clean nav bar with Hushh logo, brand name, and help button.
  *
  * Usage:
  *   <HushhTechHeader onHelpClick={() => console.log('help')} />
@@ -28,33 +28,35 @@ const HushhTechHeader: React.FC<HushhTechHeaderProps> = ({
     : "relative z-0";
 
   return (
-    <div
-      className={`${positionClasses} bg-white/90 backdrop-blur-md px-6 py-4 flex justify-between items-center border-b border-gray-50 transition-all duration-300 ${className}`}
+    <header
+      className={`${positionClasses} bg-white px-6 py-4 flex justify-between items-center border-b border-gray-100 transition-all duration-300 ${className}`}
     >
       {/* Logo + Brand */}
       <div className="flex items-center gap-4">
-        <div className="w-10 h-10 border border-black rounded-lg flex items-center justify-center bg-white overflow-hidden">
+        <div className="w-12 h-12 border border-gray-200 rounded-xl flex items-center justify-center shrink-0 bg-white overflow-hidden">
           <img
             src={hushhLogo}
             alt="Hushh Logo"
             className="w-7 h-7 object-contain"
           />
         </div>
-        <span className="text-[0.7rem] font-bold tracking-[0.2em] uppercase text-black pt-0.5">
+        <h1 className="text-[14px] font-semibold tracking-[0.15em] uppercase text-gray-900 font-sans whitespace-nowrap">
           Hushh Technologies
-        </span>
+        </h1>
       </div>
 
       {/* Help button */}
       <button
         onClick={onHelpClick}
-        className="text-gray-500 hover:text-black transition-colors"
+        className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors"
         aria-label="Help"
         tabIndex={0}
       >
-        <span className="material-symbols-outlined !text-[1.35rem]">help</span>
+        <span className="material-symbols-outlined text-gray-500 text-[26px] font-light">
+          help
+        </span>
       </button>
-    </div>
+    </header>
   );
 };
 
