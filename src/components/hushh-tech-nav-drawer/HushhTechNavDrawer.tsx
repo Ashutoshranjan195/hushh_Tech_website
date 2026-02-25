@@ -1,6 +1,6 @@
 /**
- * HushhTechNavDrawer — Full-screen navigation drawer
- * Matches the refined Hushh navigation HTML mockup.
+ * HushhTechNavDrawer — Full-screen navigation drawer (Revamped)
+ * Apple iOS colors, proper English capitalization, hushh-blue accents.
  * Slides in from right, covers entire viewport.
  */
 import React, { useEffect } from "react";
@@ -16,24 +16,24 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { icon: "home", label: "home", path: "/" },
-  { icon: "menu_book", label: "our philosophy", path: "/philosophy" },
-  { icon: "pie_chart", label: "fund a", path: "/fund-a" },
-  { icon: "groups", label: "community", path: "/community" },
-  { icon: "verified_user", label: "kyc studio alpha", path: "/kyc" },
+  { icon: "home", label: "Home", path: "/" },
+  { icon: "menu_book", label: "Our Philosophy", path: "/philosophy" },
+  { icon: "pie_chart", label: "Fund A", path: "/discover-fund-a" },
+  { icon: "groups", label: "Community", path: "/community" },
+  { icon: "verified_user", label: "KYC Studio Alpha", path: "/kyc" },
 ];
 
 const HIGHLIGHT_ITEM: NavItem = {
   icon: "lock",
-  label: "unlock 300k coins",
+  label: "Unlock 300K Coins",
   subtitle: "$1 or use coupon code",
   path: "/unlock-coins",
   highlight: true,
 };
 
 const BOTTOM_NAV: NavItem[] = [
-  { icon: "mail", label: "contact", path: "/contact" },
-  { icon: "help", label: "faq", path: "/faq" },
+  { icon: "mail", label: "Contact", path: "/contact" },
+  { icon: "help", label: "FAQ", path: "/faq" },
 ];
 
 interface HushhTechNavDrawerProps {
@@ -72,11 +72,11 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white flex flex-col">
+    <div className="fixed inset-0 z-[100] bg-white flex flex-col selection:bg-hushh-blue selection:text-white">
       {/* ── Header ── */}
       <div className="px-6 py-6 flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 border border-gray-900 rounded-lg flex items-center justify-center overflow-hidden">
+          <div className="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
             <img src={hushhLogo} alt="Hushh" className="w-5 h-5 object-contain" />
           </div>
           <span className="text-[0.7rem] font-bold tracking-[0.2em] uppercase text-gray-900 pt-0.5">
@@ -102,14 +102,14 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
             <button
               key={item.path}
               onClick={() => handleNavigate(item.path)}
-              className="group flex items-center gap-5 py-4 border-b border-gray-50 hover:bg-gray-50/50 transition-colors -mx-4 px-4 rounded-xl w-full text-left"
+              className="group flex items-center gap-5 py-4 border-b border-gray-50 hover:bg-hushh-blue/5 transition-colors -mx-4 px-4 rounded-xl w-full text-left"
             >
-              <div className="w-8 h-8 rounded-full bg-gray-50 group-hover:bg-white border border-transparent group-hover:border-gray-100 flex items-center justify-center transition-all">
-                <span className="material-symbols-outlined text-gray-400 group-hover:text-gray-900 transition-colors !text-[1.1rem]">
+              <div className="w-8 h-8 rounded-full bg-gray-50 group-hover:bg-hushh-blue/10 border border-transparent group-hover:border-hushh-blue/20 flex items-center justify-center transition-all">
+                <span className="material-symbols-outlined text-gray-400 group-hover:text-hushh-blue transition-colors !text-[1.1rem]">
                   {item.icon}
                 </span>
               </div>
-              <span className="text-[0.95rem] font-medium text-gray-900 tracking-wide lowercase">
+              <span className="text-[0.95rem] font-medium text-gray-900 tracking-wide group-hover:text-hushh-blue transition-colors">
                 {item.label}
               </span>
             </button>
@@ -118,22 +118,22 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
           {/* Highlight card — unlock coins */}
           <button
             onClick={() => handleNavigate(HIGHLIGHT_ITEM.path)}
-            className="group flex items-center gap-5 py-5 my-2 -mx-4 px-4 rounded-xl bg-gray-50 border border-gray-100 shadow-sm w-full text-left"
+            className="group flex items-center gap-5 py-5 my-2 -mx-4 px-4 rounded-xl bg-hushh-blue/5 border border-hushh-blue/20 w-full text-left hover:bg-hushh-blue/10 transition-colors"
           >
-            <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center">
-              <span className="material-symbols-outlined text-gray-900 !text-[1rem]">
+            <div className="w-8 h-8 rounded-full bg-white border border-hushh-blue/20 flex items-center justify-center">
+              <span className="material-symbols-outlined text-hushh-blue !text-[1rem]">
                 {HIGHLIGHT_ITEM.icon}
               </span>
             </div>
             <div className="flex flex-col leading-tight">
-              <span className="text-[0.95rem] font-semibold text-gray-900 tracking-wide lowercase">
+              <span className="text-[0.95rem] font-semibold text-gray-900 tracking-wide">
                 {HIGHLIGHT_ITEM.label}
               </span>
-              <span className="text-[0.7rem] text-gray-500 font-medium lowercase mt-0.5">
+              <span className="text-[0.7rem] text-gray-500 font-medium mt-0.5">
                 {HIGHLIGHT_ITEM.subtitle}
               </span>
             </div>
-            <span className="ml-auto material-symbols-outlined text-gray-300 !text-[1rem]">
+            <span className="ml-auto material-symbols-outlined text-hushh-blue/40 !text-[1rem]">
               arrow_forward
             </span>
           </button>
@@ -143,14 +143,14 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
             <button
               key={item.path}
               onClick={() => handleNavigate(item.path)}
-              className="group flex items-center gap-5 py-4 border-b border-gray-50 hover:bg-gray-50/50 transition-colors -mx-4 px-4 rounded-xl w-full text-left"
+              className="group flex items-center gap-5 py-4 border-b border-gray-50 hover:bg-hushh-blue/5 transition-colors -mx-4 px-4 rounded-xl w-full text-left"
             >
-              <div className="w-8 h-8 rounded-full bg-gray-50 group-hover:bg-white border border-transparent group-hover:border-gray-100 flex items-center justify-center transition-all">
-                <span className="material-symbols-outlined text-gray-400 group-hover:text-gray-900 transition-colors !text-[1.1rem]">
+              <div className="w-8 h-8 rounded-full bg-gray-50 group-hover:bg-hushh-blue/10 border border-transparent group-hover:border-hushh-blue/20 flex items-center justify-center transition-all">
+                <span className="material-symbols-outlined text-gray-400 group-hover:text-hushh-blue transition-colors !text-[1.1rem]">
                   {item.icon}
                 </span>
               </div>
-              <span className="text-[0.95rem] font-medium text-gray-900 tracking-wide lowercase">
+              <span className="text-[0.95rem] font-medium text-gray-900 tracking-wide group-hover:text-hushh-blue transition-colors">
                 {item.label}
               </span>
             </button>
@@ -163,26 +163,26 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
             onClick={() => handleNavigate("/profile")}
             className="flex items-center gap-5 group w-full text-left"
           >
-            <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-hushh-blue text-white flex items-center justify-center">
               <span className="material-symbols-outlined !text-[1.1rem]">person</span>
             </div>
-            <span className="text-[0.95rem] font-medium text-gray-900 tracking-wide lowercase group-hover:text-black transition-colors">
-              view profile
+            <span className="text-[0.95rem] font-medium text-gray-900 tracking-wide group-hover:text-hushh-blue transition-colors">
+              View Profile
             </span>
           </button>
 
           <div className="flex flex-col gap-4 pl-[3.25rem]">
             <button
               onClick={handleLogout}
-              className="text-left text-[0.85rem] font-medium text-gray-500 hover:text-red-500 transition-colors lowercase tracking-wide"
+              className="text-left text-[0.85rem] font-medium text-gray-500 hover:text-red-500 transition-colors tracking-wide"
             >
-              log out
+              Log Out
             </button>
             <button
               onClick={() => handleNavigate("/delete-account")}
-              className="text-left text-[0.85rem] font-medium text-gray-400 hover:text-red-500 transition-colors lowercase tracking-wide"
+              className="text-left text-[0.85rem] font-medium text-gray-400 hover:text-red-500 transition-colors tracking-wide"
             >
-              delete account
+              Delete Account
             </button>
           </div>
 
