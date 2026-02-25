@@ -1,39 +1,43 @@
 /**
  * FinancialLink — UI / Presentation
- * Ditto match of the provided HTML design.
- * Uses HushhTechCta for CONTINUE/SKIP buttons.
- * Logic stays in logic.ts — zero changes there.
+ * Same design language as step 1-8.
+ * Plaid integration restored via logic.ts (usePlaidLinkHook).
+ * Continue → opens Plaid Link → fetches data → proceeds to step 1.
  */
 import { useNavigate } from "react-router-dom";
-import { useFinancialLinkLogic } from "./logic";
+import { useFinancialLinkLogic, formatCurrency } from "./logic";
 import HushhTechCta, {
   HushhTechCtaVariant,
 } from "../../../components/hushh-tech-cta/HushhTechCta";
 import HushhTechBackHeader from "../../../components/hushh-tech-back-header/HushhTechBackHeader";
 
-/** Verification row data */
-const VERIFICATION_ROWS = [
-  {
-    icon: "account_balance_wallet",
-    title: "assets",
-    subtitle: "not available",
-  },
-  {
-    icon: "monitoring",
-    title: "investments",
-    subtitle: "no investment accounts",
-  },
-  {
-    icon: "badge",
-    title: "identity",
-    subtitle: "not available",
-  },
-];
-
 export default function OnboardingFinancialLink() {
   const navigate = useNavigate();
-  const { userId, isReady, handleContinue, handleSkip } =
-    useFinancialLinkLogic();
+  const {
+    userId,
+    isReady,
+    /* Plaid state */
+    plaidStep,
+    institution,
+    isDone,
+    canProceed,
+    isProcessing,
+    isButtonDisabled,
+    buttonText,
+    error,
+    /* Data */
+    verificationRows,
+    allAccounts,
+    accountGroups,
+    totalBalance,
+    identityInfo,
+    investmentHoldings,
+    /* Actions */
+    handleButtonClick,
+    handleSkip,
+    openPlaidLink,
+    retry,
+  } = useFinancialLinkLogic();
 
   /* Loading state */
   if (!isReady || !userId) {
@@ -41,8 +45,8 @@ export default function OnboardingFinancialLink() {
       <div className="min-h-screen bg-white flex items-center justify-center px-6">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-gray-500 text-center">
-            Preparing your secure onboarding...
+          <p className="text-sm text-gray-500 text-center lowercase">
+            preparing your secure onboarding...
           </p>
         </div>
       </div>
@@ -58,9 +62,9 @@ export default function OnboardingFinancialLink() {
       />
 
       {/* Main Content */}
-      <main className="px-6 mt-8 flex-grow max-w-md mx-auto w-full">
+      <main className="px-6 mt-8 flex-grow max-w-md mx-auto w-full pb-48">
         {/* Title Section */}
-        <section className="space-y-6 mb-16">
+        <section className="space-y-6 mb-12">
           <h2
             className="text-[36px] leading-[1.2] text-gray-900"
             style={{ fontFamily: "'Playfair Display', serif" }}
@@ -70,25 +74,125 @@ export default function OnboardingFinancialLink() {
             financial profile.
           </h2>
           <p className="text-gray-400 text-[14px] leading-relaxed max-w-[90%] font-light lowercase">
-            we'll securely check your financial profile before starting kyc
-            verification to ensure compliance.
+            {isDone && institution
+              ? `connected to ${institution.name}. you can continue to the next step.`
+              : "we'll securely check your financial profile before starting kyc verification to ensure compliance."}
           </p>
         </section>
 
-        {/* Verification Rows */}
+        {/* Connected Badge */}
+        {isDone && institution && (
+          <div className="mb-6">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-900 lowercase">
+              <span className="material-symbols-outlined text-sm text-green-600" style={{ fontVariationSettings: "'wght' 400" }}>check_circle</span>
+              connected to {institution.name}
+            </span>
+          </div>
+        )}
+
+        {/* ── Accounts Summary (shown after Plaid connects) ── */}
+        {allAccounts.length > 0 && (
+          <section className="mb-8">
+            <h3 className="text-[11px] tracking-wide text-gray-500 lowercase mb-3 font-semibold">
+              total balance
+            </h3>
+            <div className="border border-gray-200 px-4 py-4 mb-4">
+              <p className="text-xs text-gray-500 mb-1 lowercase">
+                all accounts ({allAccounts.length})
+              </p>
+              <p className="text-2xl font-bold text-black font-mono">
+                {formatCurrency(totalBalance)}
+              </p>
+            </div>
+
+            {/* Account groups */}
+            {Object.entries(accountGroups).map(([type, accounts]) => (
+              <div key={type} className="mb-4">
+                <h4 className="text-[11px] tracking-wide text-gray-500 lowercase mb-2 font-semibold">
+                  {type === 'depository' ? 'checking & savings' : type === 'credit' ? 'credit cards' : type}
+                  {' '}({(accounts as any[]).length})
+                </h4>
+                <div className="border border-gray-200 divide-y divide-gray-100">
+                  {(accounts as any[]).map((acc: any, i: number) => {
+                    const balance = acc.balances?.current ?? acc.balances?.available;
+                    const currency = acc.balances?.iso_currency_code || 'USD';
+                    return (
+                      <div key={acc.account_id || i} className="flex items-center px-4 py-3">
+                        <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center shrink-0 mr-3">
+                          <span
+                            className="material-symbols-outlined text-gray-700 text-lg"
+                            style={{ fontVariationSettings: "'wght' 300" }}
+                          >
+                            account_balance
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate lowercase">
+                            {acc.name || `account ...${acc.mask}`}
+                          </p>
+                          <p className="text-xs text-gray-500 lowercase">
+                            {acc.subtype || acc.type} {acc.mask ? `···${acc.mask}` : ''}
+                          </p>
+                        </div>
+                        <p className="text-sm font-semibold text-black font-mono shrink-0 ml-2">
+                          {balance != null ? formatCurrency(balance, currency) : '—'}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* ── Identity Data (shown after Plaid connects) ── */}
+        {identityInfo && (
+          <section className="mb-8">
+            <h3 className="text-[11px] tracking-wide text-gray-500 lowercase mb-3 font-semibold">
+              bank-verified identity
+            </h3>
+            <div className="border border-gray-200 divide-y divide-gray-100">
+              {identityInfo.names.length > 0 && (
+                <div className="flex items-center px-4 py-3 gap-3">
+                  <span className="material-symbols-outlined text-gray-400 text-lg" style={{ fontVariationSettings: "'wght' 300" }}>person</span>
+                  <div><p className="text-xs text-gray-500">name</p><p className="text-sm font-medium text-black">{identityInfo.names.join(', ')}</p></div>
+                </div>
+              )}
+              {identityInfo.emails.length > 0 && (
+                <div className="flex items-center px-4 py-3 gap-3">
+                  <span className="material-symbols-outlined text-gray-400 text-lg" style={{ fontVariationSettings: "'wght' 300" }}>email</span>
+                  <div><p className="text-xs text-gray-500">email</p><p className="text-sm font-medium text-black">{identityInfo.emails.join(', ')}</p></div>
+                </div>
+              )}
+              {identityInfo.phones.length > 0 && (
+                <div className="flex items-center px-4 py-3 gap-3">
+                  <span className="material-symbols-outlined text-gray-400 text-lg" style={{ fontVariationSettings: "'wght' 300" }}>phone</span>
+                  <div><p className="text-xs text-gray-500">phone</p><p className="text-sm font-medium text-black">{identityInfo.phones.join(', ')}</p></div>
+                </div>
+              )}
+              {identityInfo.addresses.length > 0 && (
+                <div className="flex items-center px-4 py-3 gap-3">
+                  <span className="material-symbols-outlined text-gray-400 text-lg" style={{ fontVariationSettings: "'wght' 300" }}>location_on</span>
+                  <div><p className="text-xs text-gray-500">address</p><p className="text-sm font-medium text-black">{identityInfo.addresses[0]}</p></div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* ── Verification Rows (product status) ── */}
         <section className="space-y-0 border-t border-gray-100">
-          {VERIFICATION_ROWS.map((row) => (
+          {verificationRows.map((row) => (
             <div
               key={row.title}
-              className="group py-6 border-b border-gray-100 flex items-center justify-between cursor-pointer active:bg-gray-50 transition-colors"
+              className="group py-6 border-b border-gray-100 flex items-center justify-between"
             >
               <div className="flex items-center gap-6">
                 <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center">
                   <span
                     className="material-symbols-outlined text-gray-800 text-[20px]"
-                    style={{
-                      fontVariationSettings: "'wght' 200",
-                    }}
+                    style={{ fontVariationSettings: "'wght' 200" }}
                   >
                     {row.icon}
                   </span>
@@ -97,20 +201,35 @@ export default function OnboardingFinancialLink() {
                   <span className="font-medium text-gray-900 text-[15px] lowercase">
                     {row.title}
                   </span>
-                  <span className="text-[13px] text-gray-400 font-light lowercase">
-                    {row.subtitle}
+                  <span className={`text-[13px] font-light lowercase ${
+                    row.status === 'success' ? 'text-gray-700 font-medium' : 'text-gray-400'
+                  }`}>
+                    {row.status === 'loading' && (
+                      <span className="inline-flex items-center gap-1">
+                        <span className="w-3 h-3 border border-black border-t-transparent rounded-full animate-spin inline-block" />
+                        {row.subtitle}
+                      </span>
+                    )}
+                    {row.status !== 'loading' && row.subtitle}
                   </span>
                 </div>
               </div>
               <span
-                className="material-symbols-outlined text-gray-400 text-[20px] group-hover:translate-x-1 transition-transform"
+                className="material-symbols-outlined text-gray-400 text-[20px]"
                 style={{ fontVariationSettings: "'wght' 200" }}
               >
-                east
+                {row.status === 'success' ? 'check_circle' : 'east'}
               </span>
             </div>
           ))}
         </section>
+
+        {/* Error message */}
+        {error && plaidStep === 'error' && (
+          <div className="mt-4 p-3 border border-red-200 bg-red-50 text-center">
+            <p className="text-xs text-red-600 font-medium lowercase">{error}</p>
+          </div>
+        )}
 
         {/* Trust Badges */}
         <section className="mt-auto py-12 flex flex-col items-center justify-center text-center gap-3">
@@ -136,29 +255,24 @@ export default function OnboardingFinancialLink() {
           </div>
         </section>
 
-        {/* CTAs — Continue & Skip */}
+        {/* CTAs — Connect/Continue & Skip */}
         <section className="pb-12 space-y-3">
           <HushhTechCta
             variant={HushhTechCtaVariant.BLACK}
-            onClick={() =>
-              handleContinue({
-                verified: false,
-                productsAvailable: 0,
-                balanceAvailable: false,
-                assetsAvailable: false,
-                investmentsAvailable: false,
-                timestamp: new Date().toISOString(),
-              })
-            }
+            onClick={handleButtonClick}
+            disabled={isButtonDisabled}
           >
-            Continue
+            {isButtonDisabled && (
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2 inline-block" />
+            )}
+            {buttonText}
           </HushhTechCta>
 
           <HushhTechCta
             variant={HushhTechCtaVariant.WHITE}
             onClick={handleSkip}
           >
-            Skip
+            skip
           </HushhTechCta>
         </section>
       </main>
