@@ -30,19 +30,19 @@ const HushhTechHeader: React.FC<HushhTechHeaderProps> = ({
         className={`${positionClasses} bg-white px-6 py-4 flex justify-between items-center transition-all duration-300 ${className}`}
       >
         {/* Logo + Brand */}
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 border border-gray-200 rounded-xl flex items-center justify-center shrink-0 bg-white overflow-hidden">
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
             <img
               src={hushhLogo}
               alt="Hushh Logo"
-              className="w-7 h-7 object-contain"
+              className="w-11 h-11 object-contain"
             />
           </div>
           <div className="flex flex-col">
-            <span className="text-[14px] font-semibold tracking-[0.05em] text-gray-900 font-sans">
+            <span className="text-[18px] font-bold tracking-tight text-gray-900">
               Hushh
             </span>
-            <span className="text-[11px] font-normal tracking-[0.05em] text-gray-500 font-sans">
+            <span className="text-[11px] font-medium tracking-[0.08em] text-gray-400 uppercase">
               Technologies
             </span>
           </div>
