@@ -61,20 +61,20 @@ export default function OnboardingStep1() {
   } = useStep1Logic();
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-black selection:text-white">
+    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white">
       {/* ═══ Header ═══ */}
       <HushhTechBackHeader onBackClick={handleBack} rightLabel="FAQs" />
 
       <main className="px-6 flex-grow max-w-md mx-auto w-full pb-48">
         {/* ── Progress Bar ── */}
         <div className="py-4">
-          <div className="flex justify-between text-[11px] font-semibold tracking-wide text-gray-500 mb-3 lowercase">
-            <span>step {CURRENT_STEP}/{TOTAL_STEPS}</span>
-            <span>{PROGRESS_PCT}% complete</span>
+          <div className="flex justify-between text-[11px] font-semibold tracking-wide text-gray-500 mb-3">
+            <span>Step {CURRENT_STEP}/{TOTAL_STEPS}</span>
+            <span>{PROGRESS_PCT}% Complete</span>
           </div>
           <div className="h-0.5 w-full bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-black transition-all duration-500"
+              className="h-full bg-hushh-blue transition-all duration-500"
               style={{ width: `${PROGRESS_PCT}%` }}
             />
           </div>
@@ -82,16 +82,16 @@ export default function OnboardingStep1() {
 
         {/* ── Title Section ── */}
         <section className="py-8">
-          <h3 className="text-[11px] tracking-wide text-gray-500 lowercase mb-4 font-semibold">
-            institutional series
+          <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase mb-4 font-medium">
+            Institutional Series
           </h3>
           <h1
-            className="text-[2.75rem] leading-[1.1] font-normal text-black tracking-tight lowercase"
+            className="text-[2.75rem] leading-[1.1] font-normal text-black tracking-tight font-serif"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            hushh fund a <br />
-            <span className="text-gray-400 font-normal">
-              multi-strategy alpha
+            Hushh Fund A <br />
+            <span className="text-gray-400 italic font-light">
+              Multi-Strategy Alpha
             </span>
           </h1>
         </section>
@@ -122,16 +122,16 @@ export default function OnboardingStep1() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-0.5">
-                      <h2 className="text-base font-semibold text-gray-900 lowercase">
-                        {sc.name.toLowerCase()}
+                      <h2 className="text-base font-semibold text-gray-900">
+                        {sc.name}
                       </h2>
                       {sc.id === "class_a" && (
-                        <span className="px-2 py-0.5 bg-gray-200 text-gray-700 text-[10px] font-semibold lowercase rounded-sm">
-                          recommended
+                        <span className="px-2 py-0.5 bg-hushh-blue/10 text-hushh-blue text-[10px] font-semibold rounded-full">
+                          Recommended
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-gray-500 lowercase leading-relaxed font-medium">
+                    <p className="text-xs text-gray-500 leading-relaxed font-medium">
                       {TIER_LABELS[sc.tier] || sc.description}
                     </p>
                   </div>
@@ -147,7 +147,7 @@ export default function OnboardingStep1() {
                     >
                       {sc.displayPrice}
                     </span>{" "}
-                    <span className="text-[10px] text-gray-500 lowercase">
+                    <span className="text-[10px] text-gray-500">
                       /unit
                     </span>
                   </div>
@@ -194,14 +194,14 @@ export default function OnboardingStep1() {
         <section className="mb-32">
           <div className="flex items-center justify-between mb-8">
             <h3
-              className="text-xl text-black lowercase font-normal"
+              className="text-xl text-black font-normal font-serif"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              recurring investment
+              Recurring Investment
             </h3>
             <div className="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
               <input
-                className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300 checked:right-0 checked:border-black transition-all duration-300"
+                    className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300 checked:right-0 checked:border-hushh-blue transition-all duration-300"
                 id="recurring-toggle"
                 type="checkbox"
                 defaultChecked
@@ -226,11 +226,11 @@ export default function OnboardingStep1() {
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900 lowercase mb-0.5">
-                    frequency
+                  <p className="text-sm font-semibold text-gray-900 mb-0.5">
+                    Frequency
                   </p>
-                  <p className="text-xs text-gray-500 lowercase font-medium">
-                    choose payment schedule
+                  <p className="text-xs text-gray-500 font-medium">
+                    Choose payment schedule
                   </p>
                 </div>
               </div>
@@ -241,9 +241,9 @@ export default function OnboardingStep1() {
                     <button
                       key={opt.value}
                       onClick={() => setFrequency(opt.value)}
-                      className={`flex-shrink-0 px-4 py-2.5 text-xs font-medium transition whitespace-nowrap lowercase border ${
+                      className={`flex-shrink-0 px-4 py-2.5 text-xs font-medium transition whitespace-nowrap border rounded-full ${
                         isSelected
-                          ? "bg-black text-white border-black shadow-md"
+                          ? "bg-hushh-blue text-white border-hushh-blue shadow-md"
                           : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                       }`}
                     >
@@ -266,11 +266,11 @@ export default function OnboardingStep1() {
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900 lowercase mb-0.5">
-                    day
+                  <p className="text-sm font-semibold text-gray-900 mb-0.5">
+                    Day
                   </p>
-                  <p className="text-xs text-gray-500 lowercase font-medium">
-                    select debit date
+                  <p className="text-xs text-gray-500 font-medium">
+                    Select debit date
                   </p>
                 </div>
               </div>
@@ -281,13 +281,13 @@ export default function OnboardingStep1() {
                     <button
                       key={opt.value}
                       onClick={() => setInvestmentDay(opt.value)}
-                      className={`flex-shrink-0 px-4 py-2.5 text-xs font-medium transition whitespace-nowrap lowercase border ${
+                      className={`flex-shrink-0 px-4 py-2.5 text-xs font-medium transition whitespace-nowrap border rounded-full ${
                         isSelected
-                          ? "bg-black text-white border-black shadow-md"
+                          ? "bg-hushh-blue text-white border-hushh-blue shadow-md"
                           : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                       }`}
                     >
-                      {opt.label.toLowerCase()}
+                      {opt.label}
                     </button>
                   );
                 })}
@@ -306,11 +306,11 @@ export default function OnboardingStep1() {
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900 lowercase mb-0.5">
-                    amount
+                  <p className="text-sm font-semibold text-gray-900 mb-0.5">
+                    Amount
                   </p>
-                  <p className="text-xs text-gray-500 lowercase font-medium">
-                    investment per cycle
+                  <p className="text-xs text-gray-500 font-medium">
+                    Investment per cycle
                   </p>
                 </div>
               </div>
@@ -321,9 +321,9 @@ export default function OnboardingStep1() {
                     <button
                       key={amt}
                       onClick={() => handleAmountClick(amt)}
-                      className={`flex-shrink-0 px-5 py-2.5 text-xs font-mono font-medium transition whitespace-nowrap lowercase border ${
+                      className={`flex-shrink-0 px-5 py-2.5 text-xs font-mono font-medium transition whitespace-nowrap border rounded-full ${
                         isSelected
-                          ? "bg-black text-white border-black shadow-md"
+                          ? "bg-hushh-blue text-white border-hushh-blue shadow-md"
                           : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                       }`}
                     >
@@ -344,7 +344,7 @@ export default function OnboardingStep1() {
                     value={customAmount}
                     onChange={handleCustomAmountChange}
                     placeholder="Custom amount"
-                    className="w-full pl-7 pr-4 py-3 bg-gray-50 border border-gray-200 text-sm font-mono text-gray-900 placeholder:text-gray-400 outline-none focus:ring-1 focus:ring-black focus:border-black transition lowercase"
+                    className="w-full pl-7 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-mono text-gray-900 placeholder:text-gray-400 outline-none focus:ring-1 focus:ring-hushh-blue focus:border-hushh-blue transition"
                   />
                 </div>
                 {customAmountError && (
@@ -384,11 +384,11 @@ export default function OnboardingStep1() {
         <section className="flex flex-col items-center justify-center text-center gap-2 pb-8">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[12px] text-gray-600">
+              <span className="material-symbols-outlined text-[12px] text-hushh-blue">
                 lock
               </span>
-              <span className="text-[10px] text-gray-600 tracking-wide uppercase font-medium">
-                256 bit encryption
+              <span className="text-[10px] text-gray-500 tracking-wide uppercase font-medium">
+                256 Bit Encryption
               </span>
             </div>
           </div>

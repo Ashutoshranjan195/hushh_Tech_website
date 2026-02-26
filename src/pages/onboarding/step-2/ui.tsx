@@ -36,22 +36,22 @@ export default function OnboardingStep2() {
   } = useStep2Logic();
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-black selection:text-white">
+    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white">
       {/* ═══ Header ═══ */}
       <HushhTechBackHeader onBackClick={handleBack} rightLabel="FAQs" />
 
       <main className="px-6 flex-grow max-w-md mx-auto w-full pb-48">
         {/* ── Progress Bar ── */}
         <div className="py-4">
-          <div className="flex justify-between text-[11px] font-semibold tracking-wide text-gray-500 mb-3 lowercase">
+          <div className="flex justify-between text-[11px] font-semibold tracking-wide text-gray-500 mb-3">
             <span>
-              step {CURRENT_STEP}/{TOTAL_STEPS}
+              Step {CURRENT_STEP}/{TOTAL_STEPS}
             </span>
-            <span>{PROGRESS_PCT}% complete</span>
+            <span>{PROGRESS_PCT}% Complete</span>
           </div>
           <div className="h-0.5 w-full bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-black transition-all duration-500"
+              className="h-full bg-hushh-blue transition-all duration-500"
               style={{ width: `${PROGRESS_PCT}%` }}
             />
           </div>
@@ -79,7 +79,7 @@ export default function OnboardingStep2() {
                 onClick={() => setSelectedSource(option.value)}
                 className={`w-full text-left p-5 rounded-2xl flex items-center gap-4 transition-all duration-200 border ${
                   isSelected
-                    ? "border-black bg-gray-50 shadow-md"
+                    ? "border-hushh-blue bg-hushh-blue/5 shadow-md"
                     : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
                 }`}
                 aria-label={option.label}
@@ -89,7 +89,7 @@ export default function OnboardingStep2() {
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${
                     isSelected
-                      ? "bg-gray-900 text-white"
+                      ? "bg-hushh-blue text-white"
                       : "bg-gray-100 text-gray-500"
                   }`}
                 >

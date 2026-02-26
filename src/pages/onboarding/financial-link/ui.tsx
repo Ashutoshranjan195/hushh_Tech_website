@@ -44,9 +44,9 @@ export default function OnboardingFinancialLink() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-6">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-gray-500 text-center lowercase">
-            preparing your secure onboarding...
+          <div className="w-8 h-8 border-2 border-hushh-blue border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-gray-500 text-center">
+            Preparing your secure onboarding...
           </p>
         </div>
       </div>
@@ -54,7 +54,7 @@ export default function OnboardingFinancialLink() {
   }
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-black selection:text-white">
+    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white">
       {/* Header — back + FAQs */}
       <HushhTechBackHeader
         onBackClick={() => navigate(-1)}
@@ -66,26 +66,26 @@ export default function OnboardingFinancialLink() {
         {/* Title Section */}
         <section className="space-y-6 mb-12">
           <h2
-            className="text-[36px] leading-[1.2] text-gray-900"
+            className="text-[36px] leading-[1.2] text-gray-900 font-serif"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            verify your
+            Verify Your
             <br />
-            financial profile.
+            <span className="text-gray-400 italic font-light">Financial Profile.</span>
           </h2>
-          <p className="text-gray-400 text-[14px] leading-relaxed max-w-[90%] font-light lowercase">
+          <p className="text-gray-400 text-[14px] leading-relaxed max-w-[90%] font-light">
             {isDone && institution
-              ? `connected to ${institution.name}. you can continue to the next step.`
-              : "we'll securely check your financial profile before starting kyc verification to ensure compliance."}
+              ? `Connected to ${institution.name}. You can continue to the next step.`
+              : "We'll securely check your financial profile before starting KYC verification to ensure compliance."}
           </p>
         </section>
 
         {/* Connected Badge */}
         {isDone && institution && (
           <div className="mb-6">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-900 lowercase">
-              <span className="material-symbols-outlined text-sm text-green-600" style={{ fontVariationSettings: "'wght' 400" }}>check_circle</span>
-              connected to {institution.name}
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-ios-green/10 border border-ios-green/20 rounded-full text-xs font-semibold text-gray-900">
+              <span className="material-symbols-outlined text-sm text-ios-green" style={{ fontVariationSettings: "'wght' 400" }}>check_circle</span>
+              Connected to {institution.name}
             </span>
           </div>
         )}
@@ -93,12 +93,12 @@ export default function OnboardingFinancialLink() {
         {/* ── Accounts Summary (shown after Plaid connects) ── */}
         {allAccounts.length > 0 && (
           <section className="mb-8">
-            <h3 className="text-[11px] tracking-wide text-gray-500 lowercase mb-3 font-semibold">
-              total balance
+            <h3 className="text-[11px] tracking-wide text-gray-500 uppercase mb-3 font-semibold">
+              Total Balance
             </h3>
             <div className="border border-gray-200 px-4 py-4 mb-4">
-              <p className="text-xs text-gray-500 mb-1 lowercase">
-                all accounts ({allAccounts.length})
+              <p className="text-xs text-gray-500 mb-1">
+                All Accounts ({allAccounts.length})
               </p>
               <p className="text-2xl font-bold text-black font-mono">
                 {formatCurrency(totalBalance)}
@@ -108,8 +108,8 @@ export default function OnboardingFinancialLink() {
             {/* Account groups */}
             {Object.entries(accountGroups).map(([type, accounts]) => (
               <div key={type} className="mb-4">
-                <h4 className="text-[11px] tracking-wide text-gray-500 lowercase mb-2 font-semibold">
-                  {type === 'depository' ? 'checking & savings' : type === 'credit' ? 'credit cards' : type}
+                <h4 className="text-[11px] tracking-wide text-gray-500 uppercase mb-2 font-semibold">
+                  {type === 'depository' ? 'Checking & Savings' : type === 'credit' ? 'Credit Cards' : type}
                   {' '}({(accounts as any[]).length})
                 </h4>
                 <div className="border border-gray-200 divide-y divide-gray-100">
@@ -127,10 +127,10 @@ export default function OnboardingFinancialLink() {
                           </span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate lowercase">
+                          <p className="text-sm font-medium text-gray-900 truncate">
                             {acc.name || `account ...${acc.mask}`}
                           </p>
-                          <p className="text-xs text-gray-500 lowercase">
+                          <p className="text-xs text-gray-500">
                             {acc.subtype || acc.type} {acc.mask ? `···${acc.mask}` : ''}
                           </p>
                         </div>
@@ -149,8 +149,8 @@ export default function OnboardingFinancialLink() {
         {/* ── Identity Data (shown after Plaid connects) ── */}
         {identityInfo && (
           <section className="mb-8">
-            <h3 className="text-[11px] tracking-wide text-gray-500 lowercase mb-3 font-semibold">
-              bank-verified identity
+            <h3 className="text-[11px] tracking-wide text-gray-500 uppercase mb-3 font-semibold">
+              Bank-Verified Identity
             </h3>
             <div className="border border-gray-200 divide-y divide-gray-100">
               {identityInfo.names.length > 0 && (
@@ -198,15 +198,15 @@ export default function OnboardingFinancialLink() {
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-medium text-gray-900 text-[15px] lowercase">
+                  <span className="font-medium text-gray-900 text-[15px]">
                     {row.title}
                   </span>
-                  <span className={`text-[13px] font-light lowercase ${
+                  <span className={`text-[13px] font-light ${
                     row.status === 'success' ? 'text-gray-700 font-medium' : 'text-gray-400'
                   }`}>
                     {row.status === 'loading' && (
                       <span className="inline-flex items-center gap-1">
-                        <span className="w-3 h-3 border border-black border-t-transparent rounded-full animate-spin inline-block" />
+                        <span className="w-3 h-3 border border-hushh-blue border-t-transparent rounded-full animate-spin inline-block" />
                         {row.subtitle}
                       </span>
                     )}
@@ -227,7 +227,7 @@ export default function OnboardingFinancialLink() {
         {/* Error message */}
         {error && plaidStep === 'error' && (
           <div className="mt-4 p-3 border border-red-200 bg-red-50 text-center">
-            <p className="text-xs text-red-600 font-medium lowercase">{error}</p>
+            <p className="text-xs text-red-600 font-medium">{error}</p>
           </div>
         )}
 
@@ -237,8 +237,8 @@ export default function OnboardingFinancialLink() {
             <span className="text-[10px] uppercase tracking-widest text-gray-500 font-medium">
               PCI DSS
             </span>
-            <span className="text-[10px] text-gray-400 lowercase">
-              256 bit encryption
+            <span className="text-[10px] text-gray-400 uppercase">
+              256 Bit Encryption
             </span>
             <div className="flex items-center gap-2 pl-2 border-l border-gray-300">
               <div className="flex -space-x-1">
@@ -272,7 +272,7 @@ export default function OnboardingFinancialLink() {
             variant={HushhTechCtaVariant.WHITE}
             onClick={handleSkip}
           >
-            skip
+            Skip
           </HushhTechCta>
         </section>
       </main>
