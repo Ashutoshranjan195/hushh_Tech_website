@@ -36,12 +36,12 @@ function MeetCeoPage() {
   /* ── Loading / Verifying ── */
   if (paymentState === 'loading' || paymentState === 'verifying') {
     return (
-      <div className="bg-white min-h-screen flex flex-col antialiased selection:bg-black selection:text-white">
+      <div className="bg-white min-h-screen flex flex-col antialiased selection:bg-hushh-blue selection:text-white">
         <HushhTechBackHeader onBackClick={handleBack} rightLabel="FAQs" />
         <div className="flex-1 flex items-center justify-center px-6">
           <div className="text-center">
-            <div className="w-14 h-14 mx-auto mb-6 rounded-full border-4 border-gray-200 border-t-black animate-spin" />
-            <p className="text-sm text-gray-500 font-medium lowercase">{paymentState === 'verifying' ? 'verifying payment...' : 'loading...'}</p>
+            <div className="w-14 h-14 mx-auto mb-6 rounded-full border-4 border-gray-200 border-t-hushh-blue animate-spin" />
+            <p className="text-sm text-gray-500 font-light">{paymentState === 'verifying' ? 'Verifying payment...' : 'Loading...'}</p>
           </div>
         </div>
       </div>
@@ -49,17 +49,17 @@ function MeetCeoPage() {
   }
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-black selection:text-white">
+    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white">
       <HushhTechBackHeader onBackClick={handleBack} rightLabel="FAQs" />
 
       <main className="px-6 flex-grow max-w-md mx-auto w-full pb-48">
         {/* Title */}
         <section className="py-8">
-          <h3 className="text-[11px] tracking-wide text-gray-500 lowercase mb-4 font-semibold">verification</h3>
-          <h1 className="text-[2.75rem] leading-[1.1] font-normal text-black tracking-tight lowercase" style={{ fontFamily: "'Playfair Display', serif" }}>
-            meet your
+          <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase mb-4 font-medium">Verification</h3>
+          <h1 className="text-[2.75rem] leading-[1.1] font-normal text-black tracking-tight font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Meet Your
             <br />
-            <span className="text-gray-400 italic font-normal">fund manager</span>
+            <span className="text-gray-400 italic font-light">Fund Manager</span>
           </h1>
         </section>
 
@@ -69,7 +69,7 @@ function MeetCeoPage() {
             <div className="w-10 h-10 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined text-red-500 text-lg" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>error</span>
             </div>
-            <p className="text-sm font-medium text-red-700 lowercase">{error}</p>
+            <p className="text-sm font-medium text-red-700">{error}</p>
           </div>
         )}
 
@@ -84,42 +84,42 @@ function MeetCeoPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="text-sm font-semibold text-gray-900 block">Manish Sainani</span>
-                  <span className="text-xs text-gray-500 font-medium lowercase">hedge fund manager · 1-hour private session</span>
+                  <span className="text-xs text-gray-500 font-medium">Hedge Fund Manager · 1-hour private session</span>
                 </div>
               </div>
             </div>
 
             {/* Story card */}
             <div className="my-6 bg-gray-50 rounded-2xl p-6 border border-gray-200">
-              <p className="text-sm text-gray-700 leading-relaxed mb-3 lowercase">
-                a personal consultation with manish typically costs <span className="font-bold text-gray-900">$3,000</span> per session.
+              <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                A personal consultation with Manish typically costs <span className="font-bold text-gray-900">$3,000</span> per session.
               </p>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3 lowercase">
-                because you've completed the full hushh kyc onboarding, you've unlocked this as an <span className="font-semibold text-gray-900">exclusive benefit</span> — available for just <span className="font-bold text-black">$1</span>.
+              <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                Because you've completed the full Hushh KYC onboarding, you've unlocked this as an <span className="font-semibold text-gray-900">exclusive benefit</span> — available for just <span className="font-bold text-black">$1</span>.
               </p>
-              <p className="text-xs text-gray-500 leading-relaxed lowercase">
-                your opportunity to sit 1-on-1 with a fund manager for investment strategies, portfolio allocation, and personalized guidance.
+              <p className="text-xs text-gray-500 leading-relaxed font-light">
+                Your opportunity to sit 1-on-1 with a fund manager for investment strategies, portfolio allocation, and personalized guidance.
               </p>
             </div>
 
             {/* Benefits list */}
             <section className="space-y-0 mb-6">
               <div className="py-4">
-                <h3 className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">what you unlock</h3>
+                <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">What You Unlock</h3>
               </div>
               {[
-                { icon: 'calendar_month', label: '1-hour private consultation', desc: 'with manish sainani', extra: '$3,000', filled: true },
-                { icon: 'monetization_on', label: '300,000 hushh coins', desc: 'credited instantly', filled: false },
-                { icon: 'verified', label: 'kyc verified badge', desc: 'identity verification complete', filled: false },
+                { icon: 'calendar_month', label: '1-Hour Private Consultation', desc: 'With Manish Sainani', extra: '$3,000', filled: true },
+                { icon: 'monetization_on', label: '300,000 Hushh Coins', desc: 'Credited instantly', filled: false },
+                { icon: 'verified', label: 'KYC Verified Badge', desc: 'Identity verification complete', filled: false },
               ].map((item) => (
                 <div key={item.icon} className="py-5 border-b border-gray-200">
                   <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${item.filled ? 'bg-black' : 'bg-gray-100'}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${item.filled ? 'bg-hushh-blue' : 'bg-gray-100'}`}>
                       <span className={`material-symbols-outlined text-lg ${item.filled ? 'text-white' : 'text-gray-700'}`} style={{ fontVariationSettings: "'FILL' 1" }}>{item.icon}</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-semibold text-gray-900 lowercase block">{item.label}</span>
-                      <span className="text-xs text-gray-500 font-medium lowercase">{item.desc}</span>
+                      <span className="text-sm font-semibold text-gray-900 block">{item.label}</span>
+                      <span className="text-xs text-gray-500 font-medium">{item.desc}</span>
                     </div>
                     {item.extra && <span className="text-xs font-medium text-gray-400 line-through">{item.extra}</span>}
                   </div>
@@ -131,12 +131,12 @@ function MeetCeoPage() {
             <section className="mb-6">
               <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
                 <div className="flex flex-col items-center text-center gap-1">
-                  <span className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">your price today</span>
+                  <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">Your Price Today</span>
                   <div className="flex items-baseline gap-3">
                     <span className="text-4xl font-bold text-black tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>$1</span>
                     <span className="text-sm text-gray-400 line-through">$3,000</span>
                   </div>
-                  <span className="text-[10px] text-gray-500 lowercase font-medium mt-1">exclusive kyc onboarding benefit</span>
+                  <span className="text-[10px] text-gray-500 font-light mt-1">Exclusive KYC onboarding benefit</span>
                 </div>
               </div>
             </section>
@@ -177,10 +177,10 @@ function MeetCeoPage() {
             {/* Security */}
             <section className="flex flex-col items-center text-center gap-1 pb-8">
               <div className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[12px] text-gray-600">lock</span>
-                <span className="text-[10px] text-gray-600 tracking-wide uppercase font-medium">secure payment</span>
+                <span className="material-symbols-outlined text-[12px] text-hushh-blue">lock</span>
+                <span className="text-[10px] text-gray-500 tracking-wide uppercase font-medium">Secure Payment</span>
               </div>
-              <p className="text-[10px] text-gray-400 lowercase font-medium">powered by stripe</p>
+              <p className="text-[10px] text-gray-400 font-light">Powered by Stripe</p>
             </section>
           </>
         )}
@@ -190,26 +190,26 @@ function MeetCeoPage() {
           <>
             <div className="py-5 border-b border-gray-200 mb-6">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-green-50 border border-green-200 flex items-center justify-center shrink-0">
-                  <span className="material-symbols-outlined text-green-600 text-2xl" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>check_circle</span>
+                <div className="w-14 h-14 rounded-full bg-ios-green/10 border border-ios-green/20 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-ios-green text-2xl" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>check_circle</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="text-sm font-semibold text-gray-900 block lowercase">you're verified!</span>
-                  <span className="text-xs text-gray-500 font-medium lowercase"><span className="font-bold text-gray-900">{hushhCoins.toLocaleString()} hushh coins</span> credited</span>
+                  <span className="text-sm font-semibold text-gray-900 block">You're Verified!</span>
+                  <span className="text-xs text-gray-500 font-medium"><span className="font-bold text-gray-900">{hushhCoins.toLocaleString()} Hushh Coins</span> credited</span>
                 </div>
               </div>
             </div>
 
             <div className="mb-6 bg-gray-50 rounded-2xl p-5 border border-gray-200 text-center">
-              <span className="text-sm font-semibold text-gray-900 lowercase block mb-1">schedule your consultation</span>
-              <span className="text-xs text-gray-500 font-medium lowercase">book a 1-hour session with {calendarData?.ceo.name || 'manish sainani'}</span>
-              {calendarData?.timezone && <p className="text-[10px] text-gray-400 mt-1 lowercase">{calendarData.timezone}</p>}
+              <span className="text-sm font-semibold text-gray-900 block mb-1">Schedule Your Consultation</span>
+              <span className="text-xs text-gray-500 font-medium">Book a 1-hour session with {calendarData?.ceo.name || 'Manish Sainani'}</span>
+              {calendarData?.timezone && <p className="text-[10px] text-gray-400 mt-1">{calendarData.timezone}</p>}
             </div>
 
             {loadingSlots && (
               <div className="flex flex-col items-center py-12">
-                <div className="w-10 h-10 border-4 border-gray-200 border-t-black rounded-full animate-spin mb-3" />
-                <p className="text-xs text-gray-500 lowercase">loading times...</p>
+                <div className="w-10 h-10 border-4 border-gray-200 border-t-hushh-blue rounded-full animate-spin mb-3" />
+                <p className="text-xs text-gray-500 font-light">Loading times...</p>
               </div>
             )}
 
@@ -237,7 +237,7 @@ function MeetCeoPage() {
                 {/* Time slots */}
                 {selectedDate && (
                   <div className="rounded-xl border border-gray-200 p-3">
-                    <p className="text-xs font-semibold text-gray-900 mb-2 lowercase">available times</p>
+                    <p className="text-xs font-semibold text-gray-900 mb-2">Available Times</p>
                     <div className="grid grid-cols-3 gap-2">
                       {calendarData.availability.find(d => d.date === selectedDate)?.slots.filter(s => s.available).map(slot => {
                         const t = new Date(slot.startTime);
@@ -251,7 +251,7 @@ function MeetCeoPage() {
                       })}
                     </div>
                     {calendarData.availability.find(d => d.date === selectedDate)?.slots.filter(s => s.available).length === 0 && (
-                      <p className="text-xs text-gray-400 text-center py-4 lowercase">no slots available</p>
+                      <p className="text-xs text-gray-400 text-center py-4 font-light">No slots available</p>
                     )}
                   </div>
                 )}
@@ -263,8 +263,8 @@ function MeetCeoPage() {
                       <span className="material-symbols-outlined text-white text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>event_available</span>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-900 lowercase">{new Date(selectedSlot.startTime).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
-                      <p className="text-xs text-gray-500 lowercase">{new Date(selectedSlot.startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} – {new Date(selectedSlot.endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</p>
+                      <p className="text-sm font-semibold text-gray-900">{new Date(selectedSlot.startTime).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+                      <p className="text-xs text-gray-500">{new Date(selectedSlot.startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} – {new Date(selectedSlot.endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</p>
                     </div>
                   </div>
                 )}
@@ -285,13 +285,13 @@ function MeetCeoPage() {
         {/* ═══ BOOKED ═══ */}
         {paymentState === 'booked' && (
           <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
-            <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-green-50 border border-green-200 flex items-center justify-center">
-              <span className="material-symbols-outlined text-green-600 text-[44px]" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>task_alt</span>
+            <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-ios-green/10 border border-ios-green/20 flex items-center justify-center">
+              <span className="material-symbols-outlined text-ios-green text-[44px]" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>task_alt</span>
             </div>
-            <h1 className="text-3xl font-normal text-black tracking-tight mb-2 lowercase" style={{ fontFamily: "'Playfair Display', serif" }}>all set!</h1>
-            <p className="text-sm text-gray-500 mb-1 lowercase">your consultation is scheduled with</p>
+            <h1 className="text-3xl font-normal text-black tracking-tight mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>All Set!</h1>
+            <p className="text-sm text-gray-500 mb-1 font-light">Your consultation is scheduled with</p>
             <p className="text-base font-semibold text-black">Manish Sainani</p>
-            <p className="text-xs text-gray-500 mt-1 lowercase">{hushhCoins.toLocaleString()} hushh coins earned 🪙</p>
+            <p className="text-xs text-gray-500 mt-1">{hushhCoins.toLocaleString()} Hushh Coins earned 🪙</p>
             <section className="w-full space-y-3 mt-8">
               <HushhTechCta variant={HushhTechCtaVariant.BLACK} onClick={handleContinue}>
                 Continue to Profile

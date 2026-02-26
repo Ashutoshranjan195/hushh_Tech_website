@@ -64,35 +64,35 @@ export default function OnboardingStep11() {
   } = useStep11Logic();
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-black selection:text-white">
+    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white">
       {/* ═══ Header ═══ */}
       <HushhTechBackHeader onBackClick={handleBack} rightLabel="FAQs" />
 
       <main className="px-6 flex-grow max-w-md mx-auto w-full pb-48">
         {/* ── Progress Bar ── */}
         <div className="py-4">
-          <div className="flex justify-between text-[11px] font-semibold tracking-wide text-gray-500 mb-3 lowercase">
-            <span>step {DISPLAY_STEP}/{PROG_TOTAL}</span>
-            <span>{PROG_PCT}% complete</span>
+          <div className="flex justify-between text-[11px] font-semibold tracking-wide text-gray-500 mb-3">
+            <span>Step {DISPLAY_STEP}/{PROG_TOTAL}</span>
+            <span>{PROG_PCT}% Complete</span>
           </div>
           <div className="h-0.5 w-full bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-black transition-all duration-500" style={{ width: `${PROG_PCT}%` }} />
+            <div className="h-full bg-hushh-blue transition-all duration-500" style={{ width: `${PROG_PCT}%` }} />
           </div>
         </div>
 
         {/* ── Title Section ── */}
         <section className="py-8">
-          <h3 className="text-[11px] tracking-wide text-gray-500 lowercase mb-4 font-semibold">investment</h3>
+          <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase mb-4 font-medium">Investment</h3>
           <h1
-            className="text-[2.75rem] leading-[1.1] font-normal text-black tracking-tight lowercase"
+            className="text-[2.75rem] leading-[1.1] font-normal text-black tracking-tight font-serif"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            your
+            Your
             <br />
-            <span className="text-gray-400 italic font-normal">summary</span>
+            <span className="text-gray-400 italic font-light">Summary</span>
           </h1>
-          <p className="text-sm text-gray-500 mt-4 leading-relaxed lowercase font-medium">
-            review your share class allocation and set up recurring investments.
+          <p className="text-sm text-gray-500 mt-4 leading-relaxed font-light">
+            Review your share class allocation and set up recurring investments.
           </p>
         </section>
 
@@ -102,14 +102,14 @@ export default function OnboardingStep11() {
             <div className="w-10 h-10 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined text-red-500 text-lg" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>error</span>
             </div>
-            <p className="text-sm font-medium text-red-700 lowercase">{error}</p>
+            <p className="text-sm font-medium text-red-700">{error}</p>
           </div>
         )}
 
         {/* ── Share Class Units Section ── */}
         <section className="space-y-0 mb-6">
           <div className="py-4">
-            <h3 className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">share class units</h3>
+            <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">Share Class Units</h3>
           </div>
 
           {SHARE_CLASSES.map((shareClass) => {
@@ -120,19 +120,19 @@ export default function OnboardingStep11() {
             return (
               <div key={shareClass.id} className="py-5 border-b border-gray-200">
                 <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${hasUnits ? 'bg-black' : 'bg-gray-100'}`}>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${hasUnits ? 'bg-hushh-blue' : 'bg-gray-100'}`}>
                     <span className={`material-symbols-outlined text-lg ${hasUnits ? 'text-white' : 'text-gray-400'}`} style={{ fontVariationSettings: "'wght' 400" }}>
                       monitoring
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-gray-900 lowercase">{shareClass.name.toLowerCase()}</span>
+                      <span className="text-sm font-semibold text-gray-900">{shareClass.name}</span>
                       {hasUnits && (
-                        <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-green-50 text-green-700 border border-green-100 lowercase">active</span>
+                        <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-ios-green/10 text-ios-green border border-ios-green/20">Active</span>
                       )}
                     </div>
-                    <span className="text-xs text-gray-500 font-medium lowercase">
+                    <span className="text-xs text-gray-500 font-medium">
                       {formatCurrency(shareClass.unitPrice)}/unit · {units} {units === 1 ? 'unit' : 'units'}
                       {hasUnits && ` · ${formatCurrency(subtotal)}`}
                     </span>
@@ -151,7 +151,7 @@ export default function OnboardingStep11() {
             className="flex items-center gap-2 py-4 text-gray-900 font-semibold text-sm lowercase hover:text-black transition-colors"
           >
             <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'wght' 500" }}>edit</span>
-            <span>edit share allocation</span>
+            <span>Edit Share Allocation</span>
           </button>
         </section>
 
@@ -159,14 +159,14 @@ export default function OnboardingStep11() {
         <section className="mb-8">
           <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
             <div className="flex flex-col items-center text-center gap-2">
-              <span className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">total investment</span>
+              <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">Total Investment</span>
               <span className="text-4xl font-bold text-black tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
                 {hasAnyUnits ? formatFullCurrency(totalInvestment) : '$0'}
               </span>
               {hasAnyUnits && (
                 <>
                   <div className="h-px w-12 bg-gray-300 my-1" />
-                  <span className="text-xs text-gray-500 font-medium lowercase">{getUnitsSummary()}</span>
+                  <span className="text-xs text-gray-500 font-medium">{getUnitsSummary()}</span>
                 </>
               )}
             </div>
@@ -178,15 +178,15 @@ export default function OnboardingStep11() {
           <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-gray-500 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>info</span>
           </div>
-          <p className="text-xs text-gray-500 leading-relaxed lowercase font-medium pt-2">
-            we are currently accepting investments of $1 million or greater for hushh fund a.
+          <p className="text-xs text-gray-500 leading-relaxed font-light pt-2">
+            We are currently accepting investments of $1 million or greater for Hushh Fund A.
           </p>
         </div>
 
         {/* ── Recurring Investment Section ── */}
         <section className="space-y-0 mb-6">
           <div className="py-4">
-            <h3 className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">recurring investment</h3>
+            <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">Recurring Investment</h3>
           </div>
 
           {/* Collapsed summary + edit */}
@@ -196,14 +196,14 @@ export default function OnboardingStep11() {
                 <span className="material-symbols-outlined text-gray-700 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>schedule</span>
               </div>
               <div className="flex-1 min-w-0">
-                <span className="text-sm font-semibold text-gray-900 lowercase block">{recurringSummaryTitle.toLowerCase()}</span>
-                <span className="text-xs text-gray-500 font-medium lowercase">{recurringSummarySubtitle.toLowerCase()}</span>
+                <span className="text-sm font-semibold text-gray-900 block">{recurringSummaryTitle}</span>
+                <span className="text-xs text-gray-500 font-medium">{recurringSummarySubtitle}</span>
               </div>
               <button
                 onClick={() => setShowRecurringEditor((prev) => !prev)}
-                className="text-xs font-semibold text-gray-700 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors lowercase"
+                className="text-xs font-semibold text-gray-700 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors"
               >
-                {showRecurringEditor ? 'hide' : 'edit'}
+                {showRecurringEditor ? 'Hide' : 'Edit'}
               </button>
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function OnboardingStep11() {
             <>
               {/* Frequency */}
               <div className="py-5 border-b border-gray-200">
-                <span className="text-sm font-semibold text-gray-900 lowercase block mb-4">frequency</span>
+                <span className="text-sm font-semibold text-gray-900 block mb-4">Frequency</span>
                 <div className="grid grid-cols-2 gap-2 mb-5">
                   {FREQUENCY_OPTIONS.map((option) => (
                     <button
@@ -220,11 +220,11 @@ export default function OnboardingStep11() {
                       onClick={() => setFrequency(option.value as RecurringFrequency)}
                       className={`h-11 rounded-xl text-xs font-semibold transition-all lowercase ${
                         frequency === option.value
-                          ? 'bg-black text-white'
+                          ? 'bg-hushh-blue text-white'
                           : 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50'
                       }`}
                     >
-                      {option.label.toLowerCase()}
+                      {option.label}
                     </button>
                   ))}
                 </div>
@@ -233,9 +233,9 @@ export default function OnboardingStep11() {
                 <div className="relative py-4 border border-gray-200 rounded-xl cursor-pointer">
                   <div className="flex items-center gap-3 px-4 pointer-events-none">
                     <div className="flex-1 min-w-0">
-                      <span className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold block mb-0.5">investment day</span>
-                      <span className="text-sm text-gray-900 font-medium lowercase">
-                        {DAY_OPTIONS.find(o => o.value === investmentDay)?.label.toLowerCase() || 'select day'}
+                      <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium block mb-0.5">Investment Day</span>
+                      <span className="text-sm text-gray-900 font-medium">
+                        {DAY_OPTIONS.find(o => o.value === investmentDay)?.label || 'Select day'}
                       </span>
                     </div>
                     <span className="material-symbols-outlined text-gray-400 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>expand_more</span>
@@ -255,7 +255,7 @@ export default function OnboardingStep11() {
 
               {/* Recurring Amount */}
               <div className="py-5 border-b border-gray-200">
-                <span className="text-sm font-semibold text-gray-900 lowercase block mb-4">recurring amount</span>
+                <span className="text-sm font-semibold text-gray-900 block mb-4">Recurring Amount</span>
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   {AMOUNT_PRESETS.map((amount) => (
@@ -264,13 +264,13 @@ export default function OnboardingStep11() {
                       onClick={() => handleAmountClick(amount)}
                       className={`relative py-3 rounded-xl text-sm font-bold transition-all lowercase ${
                         selectedAmount === amount
-                          ? 'bg-black text-white'
+                          ? 'bg-hushh-blue text-white'
                           : 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50'
                       }`}
                     >
                       ${amount.toLocaleString()}
                       {selectedAmount === amount && (
-                        <div className="absolute -top-1.5 -right-1.5 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center">
+                        <div className="absolute -top-1.5 -right-1.5 bg-hushh-blue text-white rounded-full w-5 h-5 flex items-center justify-center">
                           <span className="material-symbols-outlined text-[12px]" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>check</span>
                         </div>
                       )}
@@ -290,16 +290,16 @@ export default function OnboardingStep11() {
                       className={`w-full h-12 rounded-xl border bg-white text-gray-900 pl-8 pr-4 text-lg font-bold outline-none transition-all placeholder:text-gray-300 lowercase ${
                         customAmountError
                           ? 'border-red-300 focus:border-red-500 focus:ring-1 focus:ring-red-500'
-                          : 'border-gray-200 focus:border-black focus:ring-1 focus:ring-black'
+                          : 'border-gray-200 focus:border-hushh-blue focus:ring-1 focus:ring-hushh-blue'
                       }`}
                     />
                   </div>
-                  {customAmountError && <p className="text-red-500 text-xs font-medium px-1 lowercase">{customAmountError}</p>}
+                  {customAmountError && <p className="text-red-500 text-xs font-medium px-1">{customAmountError}</p>}
                   {!customAmountError && customAmount && (
-                    <p className="text-green-600 text-xs font-medium px-1 lowercase">amount: ${parseFormattedNumber(customAmount).toLocaleString()}</p>
+                    <p className="text-ios-green text-xs font-medium px-1">Amount: ${parseFormattedNumber(customAmount).toLocaleString()}</p>
                   )}
                   {!customAmount && selectedAmount === null && (
-                    <p className="text-gray-400 text-xs px-1 lowercase">leave empty to set recurring later.</p>
+                    <p className="text-gray-400 text-xs px-1 font-light">Leave empty to set recurring later.</p>
                   )}
                 </div>
               </div>
@@ -320,11 +320,11 @@ export default function OnboardingStep11() {
         {/* ── Trust Badge ── */}
         <section className="flex flex-col items-center justify-center text-center gap-2 pb-8">
           <div className="flex items-center gap-1">
-            <span className="material-symbols-outlined text-[12px] text-gray-600">verified</span>
-            <span className="text-[10px] text-gray-600 tracking-wide uppercase font-medium">sec registered fund</span>
+            <span className="material-symbols-outlined text-[12px] text-hushh-blue">verified</span>
+            <span className="text-[10px] text-gray-500 tracking-wide uppercase font-medium">SEC Registered Fund</span>
           </div>
-          <p className="text-[10px] text-gray-400 lowercase font-medium max-w-xs">
-            hushh fund a is a registered investment vehicle
+          <p className="text-[10px] text-gray-400 font-light max-w-xs">
+            Hushh Fund A is a registered investment vehicle.
           </p>
         </section>
       </main>
@@ -335,14 +335,14 @@ export default function OnboardingStep11() {
           <div className="relative w-full max-w-md bg-white rounded-t-3xl shadow-2xl animate-slide-up max-h-[90vh] overflow-hidden flex flex-col">
             {/* Modal Header */}
             <header className="flex items-center justify-between px-6 h-14 border-b border-gray-200 bg-white sticky top-0 z-10">
-              <button onClick={handleCloseModal} className="text-sm font-medium text-gray-500 lowercase">cancel</button>
-              <h2 className="text-sm font-semibold text-black lowercase">edit allocation</h2>
+              <button onClick={handleCloseModal} className="text-sm font-medium text-gray-500">Cancel</button>
+              <h2 className="text-sm font-semibold text-black">Edit Allocation</h2>
               <button
                 onClick={handleSaveChanges}
                 disabled={!hasModalChanges || savingModal}
-                className={`text-sm font-semibold lowercase ${hasModalChanges ? 'text-black' : 'text-gray-300'}`}
+                className={`text-sm font-semibold ${hasModalChanges ? 'text-hushh-blue' : 'text-gray-300'}`}
               >
-                {savingModal ? '...' : 'done'}
+                {savingModal ? '...' : 'Done'}
               </button>
             </header>
 
@@ -357,18 +357,18 @@ export default function OnboardingStep11() {
                     <div key={shareClass.id} className="py-5 border-b border-gray-200">
                       <div className="flex items-center justify-between mb-3">
                         <div>
-                          <span className="text-sm font-semibold text-gray-900 lowercase block">{shareClass.name.toLowerCase()}</span>
-                          <span className="text-xs text-gray-500 font-medium lowercase">{formatCurrency(shareClass.unitPrice)}/unit</span>
+                          <span className="text-sm font-semibold text-gray-900 block">{shareClass.name}</span>
+                          <span className="text-xs text-gray-500 font-medium">{formatCurrency(shareClass.unitPrice)}/unit</span>
                         </div>
                         {shareClass.badge && (
-                          <span className="px-2 py-0.5 text-[10px] font-semibold rounded bg-gray-100 text-gray-600 border border-gray-200 lowercase">{shareClass.badge.toLowerCase()}</span>
+                          <span className="px-2 py-0.5 text-[10px] font-semibold rounded bg-gray-100 text-gray-600 border border-gray-200">{shareClass.badge}</span>
                         )}
                       </div>
 
                       {/* Unit controls */}
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-500 font-medium lowercase">
-                          {units > 0 ? formatCurrency(subtotal) : 'no units'}
+                        <span className="text-xs text-gray-500 font-medium">
+                          {units > 0 ? formatCurrency(subtotal) : 'No units'}
                         </span>
                         <div className="flex items-center gap-3">
                           <button
@@ -399,7 +399,7 @@ export default function OnboardingStep11() {
               {/* Modal Total */}
               <div className="mt-6 bg-gray-50 rounded-2xl p-5 border border-gray-200">
                 <div className="flex flex-col items-center text-center gap-1">
-                  <span className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">total investment</span>
+                  <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">Total Investment</span>
                   <span className="text-2xl font-bold text-black tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
                     {formatFullCurrency(modalTotalInvestment)}
                   </span>

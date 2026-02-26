@@ -63,35 +63,35 @@ export default function OnboardingStep13() {
   } = useStep13Logic();
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-black selection:text-white">
+    <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white">
       {/* ═══ Header ═══ */}
       <HushhTechBackHeader onBackClick={handleBack} rightLabel="FAQs" />
 
       <main className="px-6 flex-grow max-w-md mx-auto w-full pb-48">
         {/* ── Progress Bar ── */}
         <div className="py-4">
-          <div className="flex justify-between text-[11px] font-semibold tracking-wide text-gray-500 mb-3 lowercase">
-            <span>step 12/12</span>
-            <span>100% complete</span>
+          <div className="flex justify-between text-[11px] font-semibold tracking-wide text-gray-500 mb-3">
+            <span>Step 12/12</span>
+            <span>100% Complete</span>
           </div>
           <div className="h-0.5 w-full bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-black w-full" />
+            <div className="h-full bg-hushh-blue w-full" />
           </div>
         </div>
 
         {/* ── Title Section ── */}
         <section className="py-8">
-          <h3 className="text-[11px] tracking-wide text-gray-500 lowercase mb-4 font-semibold">final step</h3>
+          <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase mb-4 font-medium">Final Step</h3>
           <h1
-            className="text-[2.75rem] leading-[1.1] font-normal text-black tracking-tight lowercase"
+            className="text-[2.75rem] leading-[1.1] font-normal text-black tracking-tight font-serif"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            bank
+            Bank
             <br />
-            <span className="text-gray-400 italic font-normal">details</span>
+            <span className="text-gray-400 italic font-light">Details</span>
           </h1>
-          <p className="text-sm text-gray-500 mt-4 leading-relaxed lowercase font-medium">
-            provide your banking information for investment transfers securely.
+          <p className="text-sm text-gray-500 mt-4 leading-relaxed font-light">
+            Provide your banking information for investment transfers securely.
           </p>
         </section>
 
@@ -101,7 +101,7 @@ export default function OnboardingStep13() {
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="h-16 bg-gray-100 rounded-xl border-b border-gray-200" />
             ))}
-            <p className="text-center text-xs text-gray-400 lowercase font-medium pt-4">loading your data...</p>
+            <p className="text-center text-xs text-gray-400 font-light pt-4">Loading your data...</p>
           </div>
         )}
 
@@ -114,17 +114,17 @@ export default function OnboardingStep13() {
                 <div className="w-10 h-10 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
                   <span className="material-symbols-outlined text-red-500 text-lg" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>error</span>
                 </div>
-                <p className="text-sm font-medium text-red-700 lowercase">{error}</p>
+                <p className="text-sm font-medium text-red-700">{error}</p>
               </div>
             )}
 
             {/* Plaid Auto-Fill Banner */}
             {autoFillMessage && (
-              <div className="mb-6 flex items-center gap-3 py-4 px-1 border-b border-green-100">
-                <div className="w-10 h-10 rounded-full bg-green-50 border border-green-200 flex items-center justify-center shrink-0">
-                  <span className="material-symbols-outlined text-green-600 text-lg" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>check_circle</span>
+              <div className="mb-6 flex items-center gap-3 py-4 px-1 border-b border-ios-green/20">
+                <div className="w-10 h-10 rounded-full bg-ios-green/10 border border-ios-green/20 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-ios-green text-lg" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>check_circle</span>
                 </div>
-                <p className="text-sm font-medium text-green-700 lowercase">{autoFillMessage}</p>
+                <p className="text-sm font-medium text-gray-700">{autoFillMessage}</p>
               </div>
             )}
 
@@ -132,8 +132,8 @@ export default function OnboardingStep13() {
             {plaidAccounts.length > 1 && (
               <section className="mb-6">
                 <div className="py-4">
-                  <h3 className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">
-                    {plaidInstitutionName ? `${plaidInstitutionName.toLowerCase()} — ` : ''}select account
+                  <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">
+                    {plaidInstitutionName ? `${plaidInstitutionName} — ` : ''}Select Account
                   </h3>
                 </div>
                 <div className="space-y-2">
@@ -155,15 +155,15 @@ export default function OnboardingStep13() {
                           isSelected ? 'border-black' : 'border-gray-200'
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${isSelected ? 'bg-black' : 'bg-gray-100'}`}>
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${isSelected ? 'bg-hushh-blue' : 'bg-gray-100'}`}>
                           <span className={`material-symbols-outlined text-lg ${isSelected ? 'text-white' : 'text-gray-400'}`} style={{ fontVariationSettings: "'wght' 400" }}>account_balance</span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <span className="text-sm font-semibold text-gray-900 lowercase block truncate">{acct.name.toLowerCase()}</span>
-                          <span className="text-xs text-gray-500 font-medium lowercase">{acct.subtype} · ····{acct.mask}</span>
+                          <span className="text-sm font-semibold text-gray-900 block truncate">{acct.name}</span>
+                          <span className="text-xs text-gray-500 font-medium">{acct.subtype} · ····{acct.mask}</span>
                         </div>
                         {isSelected && (
-                          <span className="material-symbols-outlined text-black text-lg" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>check_circle</span>
+                          <span className="material-symbols-outlined text-hushh-blue text-lg" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>check_circle</span>
                         )}
                       </button>
                     );
@@ -177,7 +177,7 @@ export default function OnboardingStep13() {
               <section className="mb-8">
                 <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
                   <div className="flex flex-col items-center text-center gap-2">
-                    <span className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">investment amount</span>
+                    <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">Investment Amount</span>
                     <span className="text-3xl font-bold text-black tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
                       {formatCurrency(totalInvestment)}
                     </span>
@@ -186,8 +186,8 @@ export default function OnboardingStep13() {
                         const units = getUnits(sc.id);
                         if (units === 0) return null;
                         return (
-                          <span key={sc.id} className="px-2 py-0.5 text-[10px] font-semibold rounded bg-gray-100 text-gray-600 border border-gray-200 lowercase">
-                            {sc.name.toLowerCase()} · {units}
+                          <span key={sc.id} className="px-2 py-0.5 text-[10px] font-semibold rounded bg-gray-100 text-gray-600 border border-gray-200">
+                            {sc.name} · {units}
                           </span>
                         );
                       })}
@@ -200,7 +200,7 @@ export default function OnboardingStep13() {
             {/* ── Banking Information ── */}
             <section className="space-y-0 mb-6">
               <div className="py-4">
-                <h3 className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">banking information</h3>
+                <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">Banking Information</h3>
               </div>
 
               {/* Bank Name */}
@@ -210,18 +210,18 @@ export default function OnboardingStep13() {
                     <span className="material-symbols-outlined text-gray-700 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>account_balance</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <label className="text-sm font-semibold text-gray-900 lowercase block mb-1">bank name</label>
+                    <label className="text-sm font-semibold text-gray-900 block mb-1">Bank Name</label>
                     <input
                       type="text"
                       value={bankName}
                       onChange={(e) => { userModifiedFields.current.add('bankName'); setBankName(e.target.value); }}
                       onBlur={() => handleBlur('bankName')}
-                      placeholder="enter bank name"
-                      className="w-full text-sm text-gray-700 font-medium bg-transparent border-none outline-none p-0 placeholder-gray-400 focus:ring-0 lowercase"
+                      placeholder="Enter bank name"
+                      className="w-full text-sm text-gray-700 font-medium bg-transparent border-none outline-none p-0 placeholder-gray-400 focus:ring-0"
                     />
                   </div>
                 </div>
-                {touched.bankName && bankNameError && <p className="text-xs text-red-500 font-medium mt-2 pl-14 lowercase">{bankNameError}</p>}
+                {touched.bankName && bankNameError && <p className="text-xs text-red-500 font-medium mt-2 pl-14">{bankNameError}</p>}
               </div>
 
               {/* Account Holder Name */}
@@ -231,18 +231,18 @@ export default function OnboardingStep13() {
                     <span className="material-symbols-outlined text-gray-700 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>person</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <label className="text-sm font-semibold text-gray-900 lowercase block mb-1">account holder name</label>
+                    <label className="text-sm font-semibold text-gray-900 block mb-1">Account Holder Name</label>
                     <input
                       type="text"
                       value={accountHolderName}
                       onChange={(e) => setAccountHolderName(e.target.value)}
                       onBlur={() => handleBlur('accountHolderName')}
-                      placeholder="as it appears on your account"
-                      className="w-full text-sm text-gray-700 font-medium bg-transparent border-none outline-none p-0 placeholder-gray-400 focus:ring-0 lowercase"
+                      placeholder="As it appears on your account"
+                      className="w-full text-sm text-gray-700 font-medium bg-transparent border-none outline-none p-0 placeholder-gray-400 focus:ring-0"
                     />
                   </div>
                 </div>
-                {touched.accountHolderName && accountHolderNameError && <p className="text-xs text-red-500 font-medium mt-2 pl-14 lowercase">{accountHolderNameError}</p>}
+                {touched.accountHolderName && accountHolderNameError && <p className="text-xs text-red-500 font-medium mt-2 pl-14">{accountHolderNameError}</p>}
               </div>
 
               {/* Account Type */}
@@ -252,8 +252,8 @@ export default function OnboardingStep13() {
                     <span className="material-symbols-outlined text-gray-700 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>credit_card</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm font-semibold text-gray-900 lowercase block mb-1">account type</span>
-                    <span className="text-sm text-gray-700 font-medium lowercase">{formattedOnboardingAccountType.toLowerCase()}</span>
+                    <span className="text-sm font-semibold text-gray-900 block mb-1">Account Type</span>
+                    <span className="text-sm text-gray-700 font-medium">{formattedOnboardingAccountType}</span>
                   </div>
                   <span className="material-symbols-outlined text-gray-400 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>chevron_right</span>
                 </div>
@@ -266,9 +266,9 @@ export default function OnboardingStep13() {
                     <span className="material-symbols-outlined text-gray-700 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>public</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm font-semibold text-gray-900 lowercase block mb-1">country</span>
-                    <span className="text-sm text-gray-700 font-medium lowercase">
-                      {COUNTRIES.find(c => c.code === bankCountry)?.name.toLowerCase() || 'select country'}
+                    <span className="text-sm font-semibold text-gray-900 block mb-1">Country</span>
+                    <span className="text-sm text-gray-700 font-medium">
+                      {COUNTRIES.find(c => c.code === bankCountry)?.name || 'Select country'}
                     </span>
                   </div>
                   <span className="material-symbols-outlined text-gray-400 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>expand_more</span>
@@ -290,7 +290,7 @@ export default function OnboardingStep13() {
             {/* ── Account Details ── */}
             <section className="space-y-0 mb-6">
               <div className="py-4">
-                <h3 className="text-[11px] tracking-wide text-gray-500 lowercase font-semibold">account details</h3>
+                <h3 className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-medium">Account Details</h3>
               </div>
 
               {/* Routing Number */}
@@ -300,7 +300,7 @@ export default function OnboardingStep13() {
                     <span className="material-symbols-outlined text-gray-700 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>tag</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <label className="text-sm font-semibold text-gray-900 lowercase block mb-1">routing number</label>
+                    <label className="text-sm font-semibold text-gray-900 block mb-1">Routing Number</label>
                     <input
                       type="tel"
                       inputMode="numeric"
@@ -313,7 +313,7 @@ export default function OnboardingStep13() {
                     />
                   </div>
                 </div>
-                {touched.routingNumber && routingNumberError && <p className="text-xs text-red-500 font-medium mt-2 pl-14 lowercase">{routingNumberError}</p>}
+                {touched.routingNumber && routingNumberError && <p className="text-xs text-red-500 font-medium mt-2 pl-14">{routingNumberError}</p>}
               </div>
 
               {/* Account Number */}
@@ -323,7 +323,7 @@ export default function OnboardingStep13() {
                     <span className="material-symbols-outlined text-gray-700 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>pin</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <label className="text-sm font-semibold text-gray-900 lowercase block mb-1">account number</label>
+                    <label className="text-sm font-semibold text-gray-900 block mb-1">Account Number</label>
                     <input
                       type="tel"
                       inputMode="numeric"
@@ -335,7 +335,7 @@ export default function OnboardingStep13() {
                     />
                   </div>
                 </div>
-                {touched.accountNumber && accountNumberError && <p className="text-xs text-red-500 font-medium mt-2 pl-14 lowercase">{accountNumberError}</p>}
+                {touched.accountNumber && accountNumberError && <p className="text-xs text-red-500 font-medium mt-2 pl-14">{accountNumberError}</p>}
               </div>
 
               {/* Confirm Account Number */}
@@ -345,7 +345,7 @@ export default function OnboardingStep13() {
                     <span className="material-symbols-outlined text-gray-700 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>verified</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <label className="text-sm font-semibold text-gray-900 lowercase block mb-1">confirm account number</label>
+                    <label className="text-sm font-semibold text-gray-900 block mb-1">Confirm Account Number</label>
                     <input
                       type="tel"
                       inputMode="numeric"
@@ -357,7 +357,7 @@ export default function OnboardingStep13() {
                     />
                   </div>
                 </div>
-                {touched.confirmAccountNumber && confirmAccountNumberError && <p className="text-xs text-red-500 font-medium mt-2 pl-14 lowercase">{confirmAccountNumberError}</p>}
+                {touched.confirmAccountNumber && confirmAccountNumberError && <p className="text-xs text-red-500 font-medium mt-2 pl-14">{confirmAccountNumberError}</p>}
               </div>
 
               {/* Info note */}
@@ -365,8 +365,8 @@ export default function OnboardingStep13() {
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                   <span className="material-symbols-outlined text-gray-500 text-lg" style={{ fontVariationSettings: "'wght' 400" }}>info</span>
                 </div>
-                <p className="text-xs text-gray-500 leading-relaxed lowercase font-medium pt-2">
-                  routing number can be found on the bottom left of your check. ensure the holder name matches your id exactly.
+                <p className="text-xs text-gray-500 leading-relaxed font-light pt-2">
+                  Routing number can be found on the bottom left of your check. Ensure the holder name matches your ID exactly.
                 </p>
               </div>
             </section>
@@ -384,11 +384,11 @@ export default function OnboardingStep13() {
             {/* ── Trust Badge ── */}
             <section className="flex flex-col items-center justify-center text-center gap-2 pb-8">
               <div className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[12px] text-gray-600">lock</span>
-                <span className="text-[10px] text-gray-600 tracking-wide uppercase font-medium">bank-level security</span>
+                <span className="material-symbols-outlined text-[12px] text-hushh-blue">lock</span>
+                <span className="text-[10px] text-gray-500 tracking-wide uppercase font-medium">Bank-Level Security</span>
               </div>
-              <p className="text-[10px] text-gray-400 lowercase font-medium max-w-xs">
-                your data is encrypted with 256-bit ssl security
+              <p className="text-[10px] text-gray-400 font-light max-w-xs">
+                Your data is encrypted with 256-bit SSL security.
               </p>
             </section>
           </>
