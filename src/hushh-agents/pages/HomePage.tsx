@@ -241,76 +241,92 @@ export default function AgentsHomePage() {
           </div>
         </section>
 
-        {/* ═══ Hushh Code — Claude Opus 4.5 via Vertex AI ═══ */}
+        {/* ═══ Hushh Code Agent — Separate Agent Card ═══ */}
         <section className="py-6">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2 font-medium">Code Agent</p>
+          <h2 className="text-xl md:text-2xl font-medium mb-4 tracking-tight font-serif" style={playfair}>
+            Hushh Code
+          </h2>
+
           <div 
-            className="group relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:shadow-2xl"
-            style={{ 
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #533483 100%)',
-            }}
+            className="group bg-[#0d1117] text-white p-6 md:p-8 rounded-2xl relative overflow-hidden shadow-xl cursor-pointer hover:shadow-2xl transition-all duration-300"
             onClick={() => navigate('/hushh-agents/code')}
             role="button"
             tabIndex={0}
             aria-label="Open Hushh Code - AI Code Generation"
             onKeyDown={(e) => { if (e.key === 'Enter') navigate('/hushh-agents/code'); }}
           >
-            {/* Animated glow */}
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-purple-900/20 to-transparent" />
-            
-            {/* NEW Badge */}
-            <div className="absolute top-4 right-4 bg-purple-500/90 backdrop-blur-sm px-3 py-1 rounded-full">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-white flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                NEW
-              </span>
-            </div>
-            
-            <div className="relative z-10 flex flex-col gap-4">
-              {/* Icon & Title */}
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-purple-500/20 backdrop-blur-md flex items-center justify-center border border-purple-400/30">
-                  <span className="material-symbols-outlined text-4xl text-purple-300">code</span>
+            {/* Glow effects */}
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl group-hover:bg-purple-500/30 transition-colors" />
+            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-purple-600/10 to-transparent" />
+
+            <div className="relative z-10 flex flex-col gap-6">
+              {/* Agent Header */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 flex items-center justify-center border border-purple-400/20">
+                    <span className="material-symbols-outlined text-3xl md:text-4xl text-purple-400">terminal</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-medium tracking-widest uppercase text-white/50 block">
+                      Code Agent • Claude Opus 4.5
+                    </span>
+                    <h2 className="text-2xl md:text-3xl font-medium font-serif" style={playfair}>
+                      Hushh Code
+                    </h2>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[10px] font-medium tracking-widest uppercase text-purple-300/70 block">
-                    Claude Opus 4.5 • Vertex AI
-                  </span>
-                  <h2 className="text-2xl font-bold text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    Hushh Code
-                  </h2>
-                  <p className="text-sm text-purple-200/80 font-light">AI Code Generation</p>
-                </div>
+                <span className="bg-purple-500/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-wider border border-purple-400/30 text-purple-400">
+                  Online
+                </span>
               </div>
-              
-              {/* Description */}
-              <p className="text-purple-100/80 text-sm font-light leading-relaxed">
-                Generate, debug, explain, and optimize code with Claude Opus 4.5.
-                Extended thinking for complex programming tasks. 
-                Supports TypeScript, Python, React, Go, Rust & more.
+
+              {/* Agent Description */}
+              <p className="text-white/70 text-sm font-light leading-relaxed">
+                AI-powered code generation, debugging, explanation, and optimization. 
+                Powered by Claude Opus 4.5 via GCP Vertex AI with extended thinking.
               </p>
-              
-              {/* Features */}
-              <div className="flex flex-wrap gap-2 mt-2">
-                {['Code Gen', 'Debug', 'Explain', 'Optimize', 'Extended Thinking'].map((cap) => (
+
+              {/* Capabilities */}
+              <div className="flex flex-wrap gap-2">
+                {['Generate', 'Debug', 'Explain', 'Optimize'].map((cap) => (
                   <span 
                     key={cap}
-                    className="px-3 py-1.5 bg-purple-500/15 backdrop-blur-sm border border-purple-400/20 rounded-full text-[10px] font-medium uppercase tracking-wider text-purple-200"
+                    className="px-3 py-1.5 bg-purple-500/10 border border-purple-400/15 rounded-full text-[10px] font-medium uppercase tracking-wider text-purple-300/80"
                   >
                     {cap}
                   </span>
                 ))}
               </div>
-              
-              {/* CTA */}
-              <div className="pt-4 border-t border-purple-400/20 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-purple-300/80">terminal</span>
-                  <span className="text-sm font-medium text-purple-200">
-                    Start Coding
+
+              {/* Language Support */}
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="text-[10px] text-white/40 uppercase tracking-wider">Languages:</span>
+                {['TS', 'JS', 'PY', 'RX', 'SQ', 'RS', 'GO'].map((lang) => (
+                  <span 
+                    key={lang}
+                    className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] font-mono font-bold text-white/50"
+                  >
+                    {lang}
                   </span>
+                ))}
+              </div>
+
+              {/* Extended Thinking Badge */}
+              <div className="flex items-center gap-2 bg-purple-500/10 border border-purple-400/15 rounded-xl px-4 py-2.5">
+                <span className="material-symbols-outlined text-purple-400 text-lg">psychology</span>
+                <div>
+                  <p className="text-[11px] text-purple-300 font-medium">Extended Thinking Enabled</p>
+                  <p className="text-[9px] text-purple-300/60">Claude reasons step-by-step before generating code</p>
                 </div>
-                <span className="material-symbols-outlined text-purple-300 group-hover:translate-x-2 transition-transform">
+              </div>
+
+              {/* Start Coding CTA */}
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                <span className="text-sm font-medium text-purple-400">
+                  Start Coding
+                </span>
+                <span className="material-symbols-outlined text-purple-400 group-hover:translate-x-2 transition-transform">
                   arrow_forward
                 </span>
               </div>
