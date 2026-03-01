@@ -37,21 +37,27 @@ serve(async (req: Request) => {
   }
 
   try {
-    // Get API key from environment (secure - not exposed to client)
-    // Try multiple keys in order of preference
-    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY") || 
-                           Deno.env.get("GOOGLE_API_KEY") || 
-                           Deno.env.get("GCP_API_KEY");
+    // Get all available API keys (supports up to 4 for load balancing/fallback)
+    const API_KEYS = [
+      Deno.env.get("GEMINI_API_KEY"),
+      Deno.env.get("GEMINI_API_KEY_2"),
+      Deno.env.get("GEMINI_API_KEY_3"),
+      Deno.env.get("GEMINI_API_KEY_4"),
+    ].filter(key => key && key.startsWith("AIza"));
     
-    if (!GEMINI_API_KEY) {
-      console.error("[gemini-chat] No API key configured (tried GEMINI_API_KEY, GOOGLE_API_KEY, GCP_API_KEY)");
+    if (API_KEYS.length === 0) {
+      console.error("[gemini-chat] No valid API keys configured (keys must start with AIza)");
       return new Response(
         JSON.stringify({ error: "API key not configured" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
     
-    console.log(`[gemini-chat] API key found (length: ${GEMINI_API_KEY.length})`);
+    console.log(`[gemini-chat] Found ${API_KEYS.length} valid API keys`);
+    
+    // Rotate keys based on timestamp for load distribution
+    const keyIndex = Math.floor(Date.now() / 1000) % API_KEYS.length;
+    const GEMINI_API_KEY = API_KEYS[keyIndex];
 
     // Parse request
     const { message, history = [], language = "en-US", model = DEFAULT_MODEL }: ChatRequest = await req.json();
