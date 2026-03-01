@@ -82,6 +82,7 @@ import HushhAgentApp from './hushh-agent/pages';
 import KaiApp from './kai/pages';
 import KaiIndiaApp from './kai-india/pages';
 import HushhStudioApp from './hushh-studio/pages';
+import HushhAgentsApp from './hushh-agents/pages';
 import GlobalNDAGate from './components/GlobalNDAGate';
 import SignNDAPage from './pages/sign-nda';
 import NDAAdminPage from './pages/nda-admin';
@@ -101,6 +102,7 @@ const ContentWrapper = ({ children }: { children: ReactNode }) => {
   const isInvestorGuide = location.pathname === '/investor-guide';
   const isHushhAI = location.pathname.startsWith('/hushh-ai');
   const isHushhAgent = location.pathname.startsWith('/hushh-agent');
+  const isHushhAgents = location.pathname.startsWith('/hushh-agents');
   const isKai = location.pathname.startsWith('/kai');
   const isStudio = location.pathname.startsWith('/studio');
   const isHushhUserProfile = location.pathname.startsWith('/hushh-user-profile');
@@ -113,7 +115,7 @@ const ContentWrapper = ({ children }: { children: ReactNode }) => {
   const isSignup = location.pathname.toLowerCase() === '/signup';
 
   return (
-    <div className={`${isHomePage || isAuthCallback || isUserRegistration || isOnboarding || isKycFlow || isA2APlayground || isInvestorGuide || isHushhAI || isHushhAgent || isKai || isStudio || isHushhUserProfile || isSignNda || isInvestorProfile || isDiscoverFundA || isCommunity || isDeleteAccount || isLogin || isSignup ? '' : 'mt-20'}`}>
+    <div className={`${isHomePage || isAuthCallback || isUserRegistration || isOnboarding || isKycFlow || isA2APlayground || isInvestorGuide || isHushhAI || isHushhAgent || isHushhAgents || isKai || isStudio || isHushhUserProfile || isSignNda || isInvestorProfile || isDiscoverFundA || isCommunity || isDeleteAccount || isLogin || isSignup ? '' : 'mt-20'}`}>
       {children}
     </div>
   );
@@ -125,6 +127,7 @@ const useLayoutVisibility = () => {
   const isHomePage = location.pathname === '/';
   const isHushhAI = location.pathname.startsWith('/hushh-ai');
   const isHushhAgent = location.pathname.startsWith('/hushh-agent');
+  const isHushhAgents = location.pathname.startsWith('/hushh-agents');
   const isKai = location.pathname.startsWith('/kai');
   const isStudio = location.pathname.startsWith('/studio');
   const isOnboarding = location.pathname.startsWith('/onboarding');
@@ -136,8 +139,8 @@ const useLayoutVisibility = () => {
   const isSignup = location.pathname.toLowerCase() === '/signup';
   const isSignNda = location.pathname.startsWith('/sign-nda');
 
-  // Home + Onboarding + Profile + Fund A + Community + Delete Account + Login + Signup + Sign NDA use HushhTechHeader/Footer — hide old global nav/footer
-  const hideOld = isHushhAI || isHushhAgent || isKai || isStudio || isHomePage || isOnboarding || isProfile || isFundA || isCommunity || isDeleteAccount || isLogin || isSignup || isSignNda;
+  // Home + Onboarding + Profile + Fund A + Community + Delete Account + Login + Signup + Sign NDA + Hushh Agents use HushhTechHeader/Footer — hide old global nav/footer
+  const hideOld = isHushhAI || isHushhAgent || isHushhAgents || isKai || isStudio || isHomePage || isOnboarding || isProfile || isFundA || isCommunity || isDeleteAccount || isLogin || isSignup || isSignNda;
   return {
     showNavbar: !hideOld,
     showFooter: !hideOld,
@@ -441,6 +444,9 @@ function App() {
             <Route path='/sign-nda' element={<SignNDAPage />} />
             {/* NDA Admin Page - Password protected view of all NDA agreements */}
             <Route path='/nda-admin' element={<NDAAdminPage />} />
+            {/* Hushh Agents - Multi-lingual AI Chat Platform */}
+            {/* Powered by GCP Gemini Live API - Hindi, English, Tamil support */}
+            <Route path='/hushh-agents/*' element={<HushhAgentsApp />} />
           </Routes>
         </ContentWrapper>
         {/* Footer - Only show for non-Hushh AI routes */}
