@@ -214,8 +214,8 @@ serve(async (req) => {
       JSON.stringify({
         success: true,
         ...result,
-        model: MODEL_ID,
-        provider: "Vertex AI",
+        model: "Hushh Intelligence Core",
+        provider: "Hushh Agents",
       }),
       {
         status: 200,

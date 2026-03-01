@@ -146,7 +146,7 @@ export default function CodePage() {
           <div>
             <span className="font-semibold text-sm text-white">Hushh Code</span>
             <span className="text-[9px] text-purple-400 block uppercase tracking-widest">
-              Claude Opus 4.5
+              Agentic Intelligence
             </span>
           </div>
         </Link>
@@ -275,7 +275,7 @@ export default function CodePage() {
                 >
                   <span className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-lg">psychology</span>
-                    Claude's Thinking Process
+                    Hushh Thinking Process
                   </span>
                   <span className="material-symbols-outlined text-lg">
                     {showThinking ? 'expand_less' : 'expand_more'}
@@ -339,7 +339,7 @@ export default function CodePage() {
             <div className="flex items-center justify-center gap-2 py-2">
               <span className="text-[10px] text-gray-600">Powered by</span>
               <span className="bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-full text-[10px] font-medium text-purple-400">
-                {result.model} via Vertex AI
+                Hushh Intelligence Core
               </span>
             </div>
           </div>
@@ -356,7 +356,7 @@ export default function CodePage() {
             </h3>
             <p className="text-sm text-gray-600 max-w-sm">
               Describe what you need, paste code to debug, or ask for an explanation. 
-              Claude Opus 4.5 with extended thinking will help.
+              Hushh Intelligence with extended thinking will help.
             </p>
           </div>
         )}
@@ -365,7 +365,7 @@ export default function CodePage() {
       {/* ═══ Footer ═══ */}
       <footer className="border-t border-gray-800/60 px-4 py-4">
         <p className="text-[10px] text-gray-600 text-center">
-          Hushh Code • Claude Opus 4.5 • GCP Vertex AI • Extended Thinking
+          Hushh Code • Agentic Intelligence • Extended Thinking
         </p>
       </footer>
     </div>

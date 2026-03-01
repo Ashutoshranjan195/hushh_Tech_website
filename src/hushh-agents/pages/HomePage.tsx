@@ -269,7 +269,7 @@ export default function AgentsHomePage() {
                   </div>
                   <div>
                     <span className="text-[10px] font-medium tracking-widest uppercase text-white/50 block">
-                      Code Agent • Claude Opus 4.5
+                      Code Agent • Agentic Intelligence
                     </span>
                     <h2 className="text-2xl md:text-3xl font-medium font-serif" style={playfair}>
                       Hushh Code
@@ -284,7 +284,7 @@ export default function AgentsHomePage() {
               {/* Agent Description */}
               <p className="text-white/70 text-sm font-light leading-relaxed">
                 AI-powered code generation, debugging, explanation, and optimization. 
-                Powered by Claude Opus 4.5 via GCP Vertex AI with extended thinking.
+                Powered by Hushh Intelligence Core with extended thinking.
               </p>
 
               {/* Capabilities */}
@@ -317,7 +317,7 @@ export default function AgentsHomePage() {
                 <span className="material-symbols-outlined text-purple-400 text-lg">psychology</span>
                 <div>
                   <p className="text-[11px] text-purple-300 font-medium">Extended Thinking Enabled</p>
-                  <p className="text-[9px] text-purple-300/60">Claude reasons step-by-step before generating code</p>
+                  <p className="text-[9px] text-purple-300/60">Hushh reasons step-by-step before generating code</p>
                 </div>
               </div>
 
