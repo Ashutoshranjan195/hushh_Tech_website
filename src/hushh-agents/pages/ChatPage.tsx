@@ -4,8 +4,7 @@
  * Desktop-optimized with sidebar for conversation controls.
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import HushhTechBackHeader from '../../components/hushh-tech-back-header/HushhTechBackHeader';
+import { useNavigate, Link } from 'react-router-dom';
 import HushhLogo from '../../components/images/Hushhogo.png';
 import { useAuth } from '../hooks/useAuth';
 import { 
@@ -124,11 +123,26 @@ export default function ChatPage() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white">
-      {/* ═══ Header ═══ */}
-      <HushhTechBackHeader 
-        onBackClick={() => navigate('/hushh-agents')}
-        showRightButton={false}
-      />
+      
+      {/* ═══ Custom Chat Header ═══ */}
+      <header className="px-6 py-4 flex justify-between items-center border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-md z-50">
+        <button
+          onClick={() => navigate('/hushh-agents')}
+          className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+          aria-label="Go back"
+        >
+          <span className="material-symbols-outlined text-gray-600 text-lg">arrow_back</span>
+        </button>
+        
+        <Link to="/hushh-agents" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-ios-dark flex items-center justify-center">
+            <img src={HushhLogo} alt="Hushh" className="w-5 h-5 object-contain" />
+          </div>
+          <span className="font-semibold text-sm">Hushh Agents</span>
+        </Link>
+        
+        <div className="w-10" /> {/* Spacer for centering */}
+      </header>
 
       {/* ═══ Main Chat Area ═══ */}
       <main className="flex-1 flex flex-col max-w-4xl mx-auto w-full px-4 md:px-6">

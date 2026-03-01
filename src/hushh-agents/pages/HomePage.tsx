@@ -1,12 +1,10 @@
 /**
  * Hushh Agents — Home Page
- * Clean design matching login/home pages.
- * Playfair Display headings, iOS colors, centered layout.
+ * Standalone project - separate from main HushhTech app.
+ * Custom header/footer without main app navigation.
  */
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import HushhTechHeader from '../../components/hushh-tech-header/HushhTechHeader';
-import HushhTechFooter from '../../components/hushh-tech-footer/HushhTechFooter';
 import HushhTechCta, { HushhTechCtaVariant } from '../../components/hushh-tech-cta/HushhTechCta';
 import { useAuth } from '../hooks/useAuth';
 import HushhLogo from '../../components/images/Hushhogo.png';
@@ -16,7 +14,7 @@ const playfair = { fontFamily: "'Playfair Display', serif" };
 
 export default function AgentsHomePage() {
   const navigate = useNavigate();
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading, user, signOut } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -45,11 +43,37 @@ export default function AgentsHomePage() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white">
-      {/* ═══ Header ═══ */}
-      <HushhTechHeader />
+      
+      {/* ═══ Custom Agents Header ═══ */}
+      <header className="px-6 py-5 flex justify-between items-center border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-md z-50">
+        <Link to="/hushh-agents" className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-ios-dark flex items-center justify-center">
+            <img src={HushhLogo} alt="Hushh" className="w-7 h-7 object-contain" />
+          </div>
+          <div>
+            <span className="font-semibold text-sm">Hushh Agents</span>
+            <span className="text-[9px] text-hushh-blue block uppercase tracking-widest">AI Platform</span>
+          </div>
+        </Link>
+        
+        <div className="flex items-center gap-4">
+          {user?.name && (
+            <span className="text-xs text-gray-500 hidden md:block">
+              Hello, {user.name.split(' ')[0]}
+            </span>
+          )}
+          <button
+            onClick={signOut}
+            className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            <span className="material-symbols-outlined text-sm">logout</span>
+            <span className="hidden md:inline">Sign Out</span>
+          </button>
+        </div>
+      </header>
 
       {/* ═══ Main Content ═══ */}
-      <main className="flex-1 px-6 pb-32 max-w-2xl mx-auto w-full">
+      <main className="flex-1 px-6 pb-16 max-w-2xl mx-auto w-full">
         
         {/* ── Hero Section ── */}
         <section className="pt-12 pb-8">
@@ -211,20 +235,25 @@ export default function AgentsHomePage() {
             Start Chatting with Hushh
           </HushhTechCta>
         </section>
+      </main>
 
-        {/* ── Trust Badge ── */}
-        <section className="flex flex-col items-center justify-center text-center gap-2 py-8">
-          <div className="flex items-center gap-1">
-            <span className="material-symbols-outlined text-[12px] text-hushh-blue">lock</span>
+      {/* ═══ Custom Agents Footer ═══ */}
+      <footer className="border-t border-gray-100 px-6 py-8">
+        <div className="max-w-2xl mx-auto flex flex-col items-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[14px] text-hushh-blue">lock</span>
             <span className="text-[10px] text-gray-400 tracking-wide uppercase font-medium">
               Secure • Private • No Data Stored
             </span>
           </div>
-        </section>
-      </main>
-
-      {/* ═══ Footer ═══ */}
-      <HushhTechFooter />
+          <p className="text-[10px] text-gray-400 text-center">
+            Powered by Hushh Intelligence & Google Cloud AI
+          </p>
+          <p className="text-[9px] text-gray-300">
+            © {new Date().getFullYear()} Hushh Technologies
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
