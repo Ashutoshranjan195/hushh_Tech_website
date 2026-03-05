@@ -34,6 +34,50 @@ const DRAG_THRESHOLD = 120;
 const VELOCITY_THRESHOLD = 500;
 const FLY_DISTANCE = 800;
 
+/* ── Category-based gradient colors for full-bleed cards ── */
+const CATEGORY_GRADIENTS: Record<string, string> = {
+  'Insurance': 'linear-gradient(135deg, #1a237e 0%, #283593 40%, #3949ab 100%)',
+  'Auto Insurance': 'linear-gradient(135deg, #0d47a1 0%, #1565c0 40%, #1976d2 100%)',
+  'Home & Rental Insurance': 'linear-gradient(135deg, #004d40 0%, #00695c 40%, #00897b 100%)',
+  'Life Insurance': 'linear-gradient(135deg, #311b92 0%, #4527a0 40%, #5e35b1 100%)',
+  'Notaries': 'linear-gradient(135deg, #bf360c 0%, #d84315 40%, #e64a19 100%)',
+  'Legal Services': 'linear-gradient(135deg, #4a148c 0%, #6a1b9a 40%, #7b1fa2 100%)',
+  'Urgent Care': 'linear-gradient(135deg, #b71c1c 0%, #c62828 40%, #d32f2f 100%)',
+  'Walk-in Clinics': 'linear-gradient(135deg, #880e4f 0%, #ad1457 40%, #c2185b 100%)',
+  'Fingerprinting': 'linear-gradient(135deg, #1b5e20 0%, #2e7d32 40%, #388e3c 100%)',
+  'Health Insurance': 'linear-gradient(135deg, #006064 0%, #00838f 40%, #0097a7 100%)',
+};
+const DEFAULT_GRADIENT = 'linear-gradient(135deg, #263238 0%, #37474f 40%, #455a64 100%)';
+
+/** Pick gradient from first matching category */
+const getGradient = (categories: string[] = []) => {
+  for (const cat of categories) {
+    if (CATEGORY_GRADIENTS[cat]) return CATEGORY_GRADIENTS[cat];
+  }
+  return DEFAULT_GRADIENT;
+};
+
+/** Get initials from name (max 2 chars) */
+const getInitials = (name: string) => {
+  const parts = name.split(/\s+/).filter(Boolean);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
+/** Get a category icon emoji */
+const getCategoryIcon = (categories: string[] = []) => {
+  const cat = (categories[0] || '').toLowerCase();
+  if (cat.includes('insurance')) return '🛡️';
+  if (cat.includes('notar')) return '📝';
+  if (cat.includes('legal')) return '⚖️';
+  if (cat.includes('urgent') || cat.includes('clinic') || cat.includes('health')) return '🏥';
+  if (cat.includes('fingerprint')) return '🔍';
+  if (cat.includes('real estate')) return '🏠';
+  if (cat.includes('tax') || cat.includes('accounting')) return '📊';
+  if (cat.includes('financial')) return '💰';
+  return '🤖';
+};
+
 /* ══════════════════════════════════════════
    Section — clean container (no crop marks)
    ══════════════════════════════════════════ */
@@ -152,24 +196,25 @@ const SwipeCard = memo(forwardRef<SwipeCardHandle, SwipeCardProps>(function Swip
       onDragEnd={isTop ? handleDragEnd : undefined}
     >
       <div
-        className="w-full h-full rounded-2xl overflow-hidden flex flex-col"
+        className="w-full h-full rounded-2xl overflow-hidden relative"
         style={{
-          background: C.bg,
-          border: `1px solid ${C.divider}`,
+          background: agent.photo_url ? C.bg : getGradient(agent.categories),
           boxShadow: stackIndex === 0
-            ? '0 4px 20px rgba(0,0,0,0.08)'
-            : `0 ${2 + stackIndex * 2}px ${8 + stackIndex * 4}px rgba(0,0,0,${0.04 + stackIndex * 0.02})`,
+            ? '0 8px 30px rgba(0,0,0,0.15)'
+            : `0 ${4 + stackIndex * 3}px ${12 + stackIndex * 6}px rgba(0,0,0,${0.06 + stackIndex * 0.03})`,
         }}
       >
         {/* ── SELECT / PASS overlays ── */}
         {isTop && (
           <>
             <motion.div
-              className="absolute top-6 left-6 z-20 px-4 py-2 rounded-sm border-2 font-bold text-lg"
+              className="absolute top-6 left-6 z-20 px-4 py-2 rounded-lg border-3 font-bold text-xl"
               style={{
                 opacity: selectOpacity,
-                color: C.selectGreen,
-                borderColor: C.selectGreen,
+                color: '#22C55E',
+                borderColor: '#22C55E',
+                borderWidth: '3px',
+                background: 'rgba(34,197,94,0.1)',
                 ...sans,
                 transform: 'rotate(-12deg)',
               }}
@@ -177,11 +222,13 @@ const SwipeCard = memo(forwardRef<SwipeCardHandle, SwipeCardProps>(function Swip
               SELECT ✓
             </motion.div>
             <motion.div
-              className="absolute top-6 right-6 z-20 px-4 py-2 rounded-sm border-2 font-bold text-lg"
+              className="absolute top-6 right-6 z-20 px-4 py-2 rounded-lg border-3 font-bold text-xl"
               style={{
                 opacity: rejectOpacity,
-                color: C.rejectRed,
-                borderColor: C.rejectRed,
+                color: '#EF4444',
+                borderColor: '#EF4444',
+                borderWidth: '3px',
+                background: 'rgba(239,68,68,0.1)',
                 ...sans,
                 transform: 'rotate(12deg)',
               }}
@@ -191,86 +238,104 @@ const SwipeCard = memo(forwardRef<SwipeCardHandle, SwipeCardProps>(function Swip
           </>
         )}
 
-        {/* ── Agent Photo ── */}
-        <div
-          className="relative w-full flex-shrink-0 flex items-center justify-center overflow-hidden"
-          style={{ height: '52%', background: C.bgLight }}
-        >
-          {agent.photo_url ? (
-            <img
-              src={agent.photo_url}
-              alt={agent.name}
-              className="w-full h-full object-cover"
-              loading={isTop ? 'eager' : 'lazy'}
-              draggable={false}
-            />
-          ) : (
-            <AgentAvatar name={agent.name} size="xl" />
-          )}
-        </div>
-
-        {/* ── Card Content ── */}
-        <div className="flex-1 px-5 py-4 flex flex-col gap-2 overflow-hidden">
-          {/* Rating */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm" style={{ color: C.gold }}>{stars}</span>
-            <span className="text-xs" style={{ color: C.textSub, ...sans }}>
-              {rating.toFixed(1)} · {agent.review_count} reviews
+        {/* ── Full-bleed visual area ── */}
+        {agent.photo_url ? (
+          /* Has photo — show it full-bleed */
+          <img
+            src={agent.photo_url}
+            alt={agent.name}
+            className="absolute inset-0 w-full h-full object-cover"
+            loading={isTop ? 'eager' : 'lazy'}
+            draggable={false}
+          />
+        ) : (
+          /* No photo — gradient with large icon + initials */
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            {/* Category icon */}
+            <span className="text-6xl mb-3 opacity-30">
+              {getCategoryIcon(agent.categories)}
+            </span>
+            {/* Large initials */}
+            <span
+              className="text-7xl sm:text-8xl font-bold tracking-wider opacity-20"
+              style={{ color: '#ffffff', ...serif }}
+            >
+              {getInitials(agent.name)}
             </span>
           </div>
+        )}
 
+        {/* ── MCP badge top-right ── */}
+        <div className="absolute top-4 right-4 z-10">
+          <span
+            className="text-[10px] px-3 py-1.5 rounded-full tracking-wider uppercase font-semibold backdrop-blur-sm"
+            style={{ background: 'rgba(255,255,255,0.15)', color: '#ffffff', ...sans }}
+          >
+            🤖 MCP
+          </span>
+        </div>
+
+        {/* ── Review count top-left ── */}
+        {agent.review_count > 0 && (
+          <div className="absolute top-4 left-4 z-10">
+            <span
+              className="text-[10px] px-3 py-1.5 rounded-full tracking-wider uppercase font-semibold backdrop-blur-sm"
+              style={{ background: 'rgba(255,255,255,0.15)', color: '#ffffff', ...sans }}
+            >
+              {agent.review_count} reviews
+            </span>
+          </div>
+        )}
+
+        {/* ── Bottom gradient overlay with info (Tinder-style) ── */}
+        <div
+          className="absolute bottom-0 left-0 right-0 z-10 px-5 pb-5 pt-20"
+          style={{
+            background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
+          }}
+        >
           {/* Name */}
           <h2
-            className="text-2xl sm:text-3xl font-normal leading-tight truncate"
-            style={{ ...serif, color: C.primary }}
+            className="text-2xl sm:text-3xl font-semibold leading-tight text-white mb-1"
+            style={serif}
           >
             {agent.name}
           </h2>
 
-          {/* Categories */}
-          {categories && (
-            <p className="text-sm truncate" style={{ color: C.textSub, ...sans }}>
-              {categories}
-            </p>
-          )}
+          {/* Categories as chips */}
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {(agent.categories || []).slice(0, 3).map((cat) => (
+              <span
+                key={cat}
+                className="text-[11px] px-2.5 py-0.5 rounded-full"
+                style={{
+                  background: 'rgba(255,255,255,0.2)',
+                  color: 'rgba(255,255,255,0.9)',
+                  backdropFilter: 'blur(4px)',
+                  ...sans,
+                }}
+              >
+                {cat}
+              </span>
+            ))}
+          </div>
 
           {/* Location */}
           {agent.city && (
-            <p className="text-xs flex items-center gap-1" style={{ color: C.textSub, ...sans }}>
-              <span className="material-symbols-outlined text-xs" style={{ fontVariationSettings: "'FILL' 0, 'wght' 300" }}>
+            <p className="text-sm flex items-center gap-1 text-white/80" style={sans}>
+              <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 0, 'wght' 300" }}>
                 location_on
               </span>
-              {agent.city}{agent.state ? `, ${agent.state}` : ''}{agent.zip ? ` ${agent.zip}` : ''}
+              {agent.city}{agent.state ? `, ${agent.state}` : ''}
             </p>
           )}
 
-          {/* Bio */}
+          {/* Bio (if available) */}
           {bioSnippet && (
-            <p
-              className="text-sm italic leading-relaxed line-clamp-2 mt-1"
-              style={{ color: C.textSub, ...sans }}
-            >
+            <p className="text-sm text-white/70 mt-1.5 line-clamp-2 italic" style={sans}>
               "{bioSnippet}"
             </p>
           )}
-
-          {/* Badges */}
-          <div className="flex gap-2 mt-auto pt-2">
-            <span
-              className="text-[10px] px-3 py-1 tracking-wider uppercase font-medium"
-              style={{ background: C.bgLight, color: C.accent, ...sans }}
-            >
-              🤖 MCP Enabled
-            </span>
-            {agent.years_in_business && (
-              <span
-                className="text-[10px] px-3 py-1 tracking-wider uppercase font-medium"
-                style={{ background: C.bgLight, color: C.primary, ...sans }}
-              >
-                {agent.years_in_business}yr exp
-              </span>
-            )}
-          </div>
         </div>
       </div>
     </motion.div>
