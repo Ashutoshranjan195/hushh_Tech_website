@@ -100,6 +100,7 @@ const FeatureSection = ({
   linkTo,
   mockupIcon,
   mockupItems,
+  onNavigate,
 }: {
   label: string;
   heading: string;
@@ -109,8 +110,11 @@ const FeatureSection = ({
   linkTo: string;
   mockupIcon: string;
   mockupItems?: string[];
+  onNavigate?: (to: string) => void;
 }) => {
   const navigate = useNavigate();
+  /* Use guarded navigation if provided, else fallback to plain navigate */
+  const handleNav = onNavigate || navigate;
   const [activeIdx, setActiveIdx] = useState(0);
 
   /* Auto-cycle through items every 2s — Saturn video-like effect */
@@ -275,7 +279,7 @@ const FeatureSection = ({
           </p>
         )}
         <button
-          onClick={() => navigate(linkTo)}
+          onClick={() => handleNav(linkTo)}
           className="text-sm font-semibold mt-2 hover:opacity-70 transition-opacity"
           style={{ color: C.accent, ...sans }}
         >
@@ -358,6 +362,22 @@ export default function AgentsHomePage() {
   /* Current path for active state */
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
 
+  /**
+   * Auth guardrail — if user is NOT logged in, redirect to login
+   * with ?redirectTo= so they return to the target page after auth.
+   * Home (/hushh-agents) is the only public page — everything else requires auth.
+   */
+  const guardedNavigate = useCallback(
+    (to: string) => {
+      if (isAuthenticated) {
+        navigate(to);
+      } else {
+        navigate(`/hushh-agents/login?redirectTo=${encodeURIComponent(to)}`);
+      }
+    },
+    [isAuthenticated, navigate],
+  );
+
   return (
     <div
       className="min-h-screen selection:bg-blue-100"
@@ -434,7 +454,15 @@ export default function AgentsHomePage() {
                   return (
                     <button
                       key={item.label}
-                      onClick={() => { setIsMenuOpen(false); navigate(item.to); }}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        /* Home is public — everything else requires auth */
+                        if (item.to === '/hushh-agents') {
+                          navigate(item.to);
+                        } else {
+                          guardedNavigate(item.to);
+                        }
+                      }}
                       className="group w-full py-5 flex items-center justify-between cursor-pointer hover:bg-gray-50/50 transition-colors -mx-2 px-2"
                       style={{ borderBottom: idx < navItems.length - 1 ? `1px solid ${C.divider}` : 'none' }}
                     >
@@ -584,7 +612,7 @@ export default function AgentsHomePage() {
                     {/* Get started CTA */}
                     <div className="pt-4">
                       <button
-                        onClick={() => { setIsMenuOpen(false); navigate('/hushh-agents/kirkland'); }}
+                        onClick={() => { setIsMenuOpen(false); guardedNavigate('/hushh-agents/kirkland'); }}
                         className="w-full py-4 text-center text-sm font-medium tracking-wide text-white transition-opacity hover:opacity-90"
                         style={{ background: C.accent }}
                       >
@@ -634,7 +662,7 @@ export default function AgentsHomePage() {
             deliver excellence at scale.
           </p>
           <button
-            onClick={() => navigate('/hushh-agents/kirkland')}
+            onClick={() => guardedNavigate('/hushh-agents/kirkland')}
             className="inline-flex items-center gap-2 px-8 py-4 text-sm font-medium text-white tracking-wide transition-opacity hover:opacity-90"
             style={{ background: C.accent }}
           >
@@ -756,6 +784,7 @@ export default function AgentsHomePage() {
         linkTo="/hushh-agents/kirkland"
         mockupIcon="domain"
         mockupItems={['R.I.A. Advisors', 'Fund Research', 'Compliance Reports', 'Client Matching']}
+        onNavigate={guardedNavigate}
       />
 
       {/* ═══ Feature 2: AI Chat ═══ */}
@@ -768,6 +797,7 @@ export default function AgentsHomePage() {
         linkTo="/hushh-agents/chat"
         mockupIcon="chat"
         mockupItems={['Natural Language', 'Multi-turn Context', 'Creative Writing', 'Code Analysis']}
+        onNavigate={guardedNavigate}
       />
 
       {/* ═══ Feature 3: Voice Agent ═══ */}
@@ -779,6 +809,7 @@ export default function AgentsHomePage() {
         linkText="Learn more"
         linkTo="/hushh-agents/voice"
         mockupIcon="record_voice_over"
+        onNavigate={guardedNavigate}
       />
 
       {/* ═══ Feature 4: Code Generation ═══ */}
@@ -790,6 +821,7 @@ export default function AgentsHomePage() {
         linkText="Learn more"
         linkTo="/hushh-agents/code"
         mockupIcon="code"
+        onNavigate={guardedNavigate}
       />
 
       {/* ═══ CEO Section ═══ */}
@@ -968,7 +1000,7 @@ export default function AgentsHomePage() {
             Unlock your AI agents
           </h3>
           <button
-            onClick={() => navigate('/hushh-agents/kirkland')}
+            onClick={() => guardedNavigate('/hushh-agents/kirkland')}
             className="inline-flex items-center gap-2 px-7 py-4 text-sm font-medium tracking-wide text-white transition-opacity hover:opacity-80"
             style={{ background: 'rgba(255,255,255,0.15)' }}
           >
