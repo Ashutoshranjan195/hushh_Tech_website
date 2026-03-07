@@ -24,7 +24,7 @@
  */
 import React from "react";
 import { Link } from "react-router-dom";
-import hushhLogo from "../images/Hushhogo.png";
+import hushhLogo from "../components/images/Hushhogo.png";
 
 interface OnboardingShellProps {
     /** Current step number (1-based) */

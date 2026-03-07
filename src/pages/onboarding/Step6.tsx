@@ -308,4 +308,5 @@ export default function OnboardingStep6() {
         </p>
       </div>
     </OnboardingShell>
-
+  );
+}

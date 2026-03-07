@@ -426,41 +426,6 @@ export default function OnboardingStep4() {
           </div>
         )}
 
-        {/* ═══ Fixed Footer ═══ */}
-        {!isFooterVisible && !showLocationModal && (
-          <div
-            className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-md border-t border-[#C6C6C8]/30 z-40"
-            style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}
-            data-onboarding-footer
-          >
-            <div className="max-w-md mx-auto grid grid-cols-2 gap-4">
-              {/* Skip Button */}
-              <button
-                onClick={handleSkip}
-                className="h-[50px] w-full rounded-xl bg-[#F2F2F7] text-[#007AFF] font-semibold text-[17px] active:bg-gray-200 transition-colors flex items-center justify-center"
-              >
-                Skip
-              </button>
-              {/* Next Button */}
-              <button
-                onClick={handleContinue}
-                disabled={!canContinue || isLoading || isDetectingLocation}
-                data-onboarding-cta
-                className={`h-[50px] w-full rounded-xl font-semibold text-[17px] shadow-sm transition-all flex items-center justify-center ${canContinue && !isLoading && !isDetectingLocation
-                  ? 'bg-[#007AFF] text-white active:opacity-90 active:scale-[0.98]'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  }`}
-              >
-                {isDetectingLocation ? (
-                  <>
-                    <div className="animate-spin h-4 w-4 mr-2 border-2 border-white border-t-transparent rounded-full" />
-                    Detecting...
-                  </>
-                ) : isLoading ? 'Saving...' : 'Next'}
-              </button>
-            </div>
-          </div>
-        )}
 
       </OnboardingShell>
 

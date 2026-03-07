@@ -104,7 +104,6 @@ export default function OnboardingStep7() {
      RENDER
      ═══════════════════════════════════════════════ */
   return (
-  return (
     <OnboardingShell
       step={DISPLAY_STEP}
       totalSteps={TOTAL_STEPS}
@@ -184,8 +183,8 @@ export default function OnboardingStep7() {
           onClick={handleContinue}
           disabled={!isValid || isLoading}
           className={`flex-[2] py-3.5 rounded-md text-[14px] font-semibold transition-all ${isValid && !isLoading
-              ? 'bg-[#AA4528] text-white hover:bg-[#8C3720] active:scale-[0.99]'
-              : 'bg-[#EEE9E0] text-[#C4BFB5] cursor-not-allowed'
+            ? 'bg-[#AA4528] text-white hover:bg-[#8C3720] active:scale-[0.99]'
+            : 'bg-[#EEE9E0] text-[#C4BFB5] cursor-not-allowed'
             }`}
         >
           {isLoading ? 'Saving…' : 'Continue'}

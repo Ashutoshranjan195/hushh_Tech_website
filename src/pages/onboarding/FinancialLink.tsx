@@ -103,7 +103,7 @@ export default function OnboardingFinancialLink() {
         px={6}
       >
         <VStack spacing={3}>
-          <Spinner size="lg" color="#2F80ED" thickness="3px" />
+          <Spinner size="lg" color="#AA4528" thickness="3px" />
           <Text fontSize="sm" color="gray.500" textAlign="center">
             Preparing your secure onboarding...
           </Text>

@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import config from '../../resources/config/config';
 import OnboardingShell from '../../components/OnboardingShell';
-import config from '../../resources/config/config';
 
 interface OnboardingData {
   legal_first_name?: string;

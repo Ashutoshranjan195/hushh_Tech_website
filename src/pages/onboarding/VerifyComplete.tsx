@@ -10,8 +10,6 @@ import {
 import config from '../../resources/config/config';
 import { upsertOnboardingData } from '../../services/onboarding/upsertOnboardingData';
 import OnboardingShell from '../../components/OnboardingShell';
-import config from '../../resources/config/config';
-import { upsertOnboardingData } from '../../services/onboarding/upsertOnboardingData';
 
 type VerificationResult = 'verified' | 'processing' | 'requires_input' | 'failed' | 'loading';
 
