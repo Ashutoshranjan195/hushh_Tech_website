@@ -211,8 +211,10 @@ export function useCombinedLocationLogic() {
     }
     if (locationData.formattedAddress && !addressLine1) {
       const parsed = locationService.parseFormattedAddress(locationData.formattedAddress, locationData);
-      const combined = [parsed.line1, parsed.line2].filter(Boolean).join(', ');
-      if (combined) setAddressLine1(combined);
+      if (parsed.line1) setAddressLine1(parsed.line1);
+      // Build Address Line 2 from city + state (e.g. "Pune, Maharashtra")
+      const cityState = [locationData.city, locationData.state].filter(Boolean).join(', ');
+      if (cityState) setAddressLine2(cityState);
     }
 
     // 3. Show auto-fill success (GPS stores country/state/city automatically)
@@ -323,8 +325,12 @@ export function useCombinedLocationLogic() {
       if (cachedLocation && !resolved.values.address_line_1) {
         if (cachedLocation.formattedAddress) {
           const parsed = locationService.parseFormattedAddress(cachedLocation.formattedAddress, cachedLocation);
-          const combined = [parsed.line1, parsed.line2].filter(Boolean).join(', ');
-          if (combined) setAddressLine1(combined);
+          if (parsed.line1) setAddressLine1(parsed.line1);
+          // Build Address Line 2 from city + state (e.g. "Pune, Maharashtra")
+          if (!resolved.values.address_line_2) {
+            const cityState = [cachedLocation.city, cachedLocation.state].filter(Boolean).join(', ');
+            if (cityState) setAddressLine2(cityState);
+          }
         }
         if (cachedLocation.postalCode && !resolved.values.zip_code) {
           setZipCode(cachedLocation.postalCode);
