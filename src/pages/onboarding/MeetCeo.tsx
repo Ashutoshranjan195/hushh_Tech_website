@@ -138,11 +138,12 @@ function MeetCeoPage() {
       const { data: { user } } = await config.supabaseClient!.auth.getUser();
       if (!user) throw new Error('Not authenticated');
       // Upsert payment record with coupon
-      await config.supabaseClient!.from('ceo_meeting_payments').upsert({
+      const { error: upsertError } = await config.supabaseClient!.from('ceo_meeting_payments').upsert({
         user_id: user.id, payment_status: 'completed', payment_method: 'coupon',
-        coupon_code: code, hushh_coins_awarded: 300000, amount: 0, currency: 'usd',
+        coupon_code: code, hushh_coins_awarded: 300000, amount_cents: 0,
         updated_at: new Date().toISOString(),
       }, { onConflict: 'user_id' });
+      if (upsertError) throw upsertError;
       setHushhCoins(300000);
       setPaymentState('paid');
       // Send coins credit email notification

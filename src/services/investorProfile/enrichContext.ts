@@ -224,7 +224,7 @@ export async function enrichWithPlaidData(userId: string): Promise<PlaidFinancia
   try {
     const { data: fin } = await config.supabaseClient
       .from("user_financial_data")
-      .select("balances, investments, identity_data, identity_match_data, institution_name")
+      .select("balances, investments, identity_data, identity_match, identity_match_scores, institution_name")
       .eq("user_id", userId)
       .maybeSingle();
 
@@ -258,7 +258,7 @@ export async function enrichWithPlaidData(userId: string): Promise<PlaidFinancia
     const primaryAddr = addresses[0]?.data || {};
 
     // Identity verification score
-    const idMatch = fin.identity_match_data;
+    const idMatch = fin.identity_match || fin.identity_match_scores;
     const idScore = idMatch
       ? Math.round(((idMatch.legal_name?.score || 0) + (idMatch.email_address?.score || 0) + (idMatch.phone_number?.score || 0) + (idMatch.address?.score || 0)) / 4)
       : null;

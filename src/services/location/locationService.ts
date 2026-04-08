@@ -701,14 +701,6 @@ export class LocationService {
       gps_country: countryName || locationData.country || null,
       gps_zip_code: locationData.postalCode || null,
       gps_full_address: locationData.formattedAddress || null,
-      // Backward-compatible payload for older schemas that stored the full JSON blob.
-      gps_location_data: locationData,
-      gps_detected_country: countryName,
-      gps_detected_state: locationData.state,
-      gps_detected_city: locationData.city,
-      gps_detected_postal_code: locationData.postalCode,
-      gps_detected_phone_dial_code: locationData.phoneDialCode,
-      gps_detected_timezone: locationData.timezone,
       gps_detected_at: cacheRecord.lastCheckedAt,
       updated_at: cacheRecord.lastCheckedAt,
     } satisfies Record<string, unknown>;

@@ -97,6 +97,37 @@ describe('LocationService shared refresh flow', () => {
     });
   });
 
+  it('mirrors only normalized gps columns when saving location to onboarding', async () => {
+    const service = new LocationService();
+    vi.spyOn(service, 'readSharedLocationCache').mockResolvedValue(null);
+    vi.spyOn(service, 'writeSharedLocationCache').mockResolvedValue();
+
+    await service.saveLocationToOnboarding('user-789', sanFrancisco, 'gps');
+
+    expect(upsertOnboardingDataMock).toHaveBeenCalledTimes(1);
+    expect(upsertOnboardingDataMock).toHaveBeenCalledWith(
+      'user-789',
+      expect.objectContaining({
+        gps_latitude: sanFrancisco.latitude,
+        gps_longitude: sanFrancisco.longitude,
+        gps_city: 'San Francisco',
+        gps_state: 'California',
+        gps_country: 'United States',
+        gps_zip_code: '94105',
+        gps_full_address: '1 Market St, San Francisco, CA 94105, United States',
+      })
+    );
+
+    const savedPayload = upsertOnboardingDataMock.mock.calls[0]?.[1] as Record<string, unknown>;
+    expect(savedPayload).not.toHaveProperty('gps_location_data');
+    expect(savedPayload).not.toHaveProperty('gps_detected_country');
+    expect(savedPayload).not.toHaveProperty('gps_detected_state');
+    expect(savedPayload).not.toHaveProperty('gps_detected_city');
+    expect(savedPayload).not.toHaveProperty('gps_detected_postal_code');
+    expect(savedPayload).not.toHaveProperty('gps_detected_phone_dial_code');
+    expect(savedPayload).not.toHaveProperty('gps_detected_timezone');
+  });
+
   it('refreshes timestamps without flagging a location change when the signature is unchanged', async () => {
     const service = new LocationService();
     const samePlace = {

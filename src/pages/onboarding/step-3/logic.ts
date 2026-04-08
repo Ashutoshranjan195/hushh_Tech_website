@@ -750,7 +750,10 @@ export function useCombinedLocationLogic() {
         currentStep: 4,
       } as Step3FormState & { currentStep: number });
 
-      await upsertOnboardingData(userId, payload);
+      const { error: saveError } = await upsertOnboardingData(userId, payload);
+      if (saveError) {
+        throw new Error(saveError.message);
+      }
       navigate('/onboarding/step-4');
     } catch (err) {
       console.error('[Step3-Combined] Save error:', err);
@@ -767,11 +770,15 @@ export function useCombinedLocationLogic() {
     setIsLoading(true);
     try {
       if (userId && config.supabaseClient) {
-        await upsertOnboardingData(userId, { current_step: 4 });
+        const { error: saveError } = await upsertOnboardingData(userId, { current_step: 4 });
+        if (saveError) {
+          throw new Error(saveError.message);
+        }
       }
       navigate('/onboarding/step-4');
-    } catch {
-      navigate('/onboarding/step-4');
+    } catch (err) {
+      console.error('[Step3-Combined] Skip save error:', err);
+      setError('Failed to save. Please try again.');
     } finally {
       setIsLoading(false);
     }
