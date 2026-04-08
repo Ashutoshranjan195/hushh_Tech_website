@@ -2,20 +2,19 @@ export const FINANCIAL_LINK_ROUTE = '/onboarding/financial-link' as const;
 
 export type FinancialLinkStatus = 'pending' | 'completed' | 'skipped';
 
-const TOTAL_VISIBLE_ONBOARDING_STEPS = 11;
+const TOTAL_VISIBLE_ONBOARDING_STEPS = 10;
 
 const CANONICAL_STEP_ROUTE_BY_DISPLAY_STEP = {
   1: '/onboarding/step-1',
   2: '/onboarding/step-2',
-  3: '/onboarding/step-3',
-  4: '/onboarding/step-4',
-  5: '/onboarding/step-5',
-  6: '/onboarding/step-7',
-  7: '/onboarding/step-8',
-  8: '/onboarding/step-9',
-  9: '/onboarding/step-10',
-  10: '/onboarding/step-11',
-  11: '/onboarding/step-12',
+  3: '/onboarding/step-4',
+  4: '/onboarding/step-5',
+  5: '/onboarding/step-7',
+  6: '/onboarding/step-8',
+  7: '/onboarding/step-9',
+  8: '/onboarding/step-10',
+  9: '/onboarding/step-11',
+  10: '/onboarding/step-12',
 } as const;
 
 export type CanonicalOnboardingRoute =
@@ -32,21 +31,20 @@ export const CANONICAL_ONBOARDING_ROUTES = Object.values(
 const DISPLAY_STEP_BY_ROUTE: Record<CanonicalOnboardingRoute, number> = {
   '/onboarding/step-1': 1,
   '/onboarding/step-2': 2,
-  '/onboarding/step-3': 3,
-  '/onboarding/step-4': 4,
-  '/onboarding/step-5': 5,
-  '/onboarding/step-7': 6,
-  '/onboarding/step-8': 7,
-  '/onboarding/step-9': 8,
-  '/onboarding/step-10': 9,
-  '/onboarding/step-11': 10,
-  '/onboarding/step-12': 11,
+  '/onboarding/step-4': 3,
+  '/onboarding/step-5': 4,
+  '/onboarding/step-7': 5,
+  '/onboarding/step-8': 6,
+  '/onboarding/step-9': 7,
+  '/onboarding/step-10': 8,
+  '/onboarding/step-11': 9,
+  '/onboarding/step-12': 10,
 };
 
 const RAW_STEP_TO_ROUTE: Record<number, CanonicalOnboardingRoute> = {
   1: '/onboarding/step-1',
   2: '/onboarding/step-2',
-  3: '/onboarding/step-3',
+  3: '/onboarding/step-4',
   4: '/onboarding/step-4',
   5: '/onboarding/step-5',
   6: '/onboarding/step-5',
@@ -127,6 +125,7 @@ export const normalizeLegacyOnboardingRedirectTarget = (target: string): string 
 };
 
 const normalizeCompatibleOnboardingRoute = (route: string): CanonicalOnboardingRoute => {
+  if (route === '/onboarding/step-3') return '/onboarding/step-4';
   if (route === '/onboarding/step-6') return '/onboarding/step-5';
   if (route === '/onboarding/step-13') return '/onboarding/step-12';
 
