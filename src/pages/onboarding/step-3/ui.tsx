@@ -10,7 +10,6 @@ import {
   TOTAL_STEPS,
   PROGRESS_PCT,
 } from "./logic";
-import { SearchableSelect } from "../../../components/onboarding/SearchableSelect";
 import HushhTechBackHeader from "../../../components/hushh-tech-back-header/HushhTechBackHeader";
 import HushhTechCta, {
   HushhTechCtaVariant,
@@ -21,10 +20,6 @@ const DISPLAY_STEP = 3;
 
 export default function OnboardingStep3Combined() {
   const s = useCombinedLocationLogic();
-
-  const isAutoFillComplete =
-    s.detectionStatus === "Address auto-filled from GPS" ||
-    s.detectionStatus === "Address fields populated";
 
   return (
     <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white relative overflow-hidden">
@@ -110,43 +105,20 @@ export default function OnboardingStep3Combined() {
             </div>
           )}
 
-          {/* Auto-fill status (cascading dropdowns loading) */}
-          {(s.isAutoFilling || s.detectionStatus) && (
-            <div
-              className={`flex items-center gap-3 py-4 px-1 mb-4 border-b transition-colors ${
-                isAutoFillComplete ? "border-green-100" : "border-gray-100"
-              }`}
-            >
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                  isAutoFillComplete ? "bg-green-50" : "bg-gray-100"
-                }`}
-              >
-                {s.isAutoFilling && !isAutoFillComplete ? (
-                  <div className="animate-spin h-5 w-5 border-2 border-hushh-blue border-t-transparent rounded-full" />
-                ) : (
-                  <span
-                    className="material-symbols-outlined text-ios-green text-lg"
-                    style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}
-                  >
-                    check
-                  </span>
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p
-                  className={`text-sm font-medium ${
-                    isAutoFillComplete ? "text-green-700" : "text-gray-700"
-                  }`}
+          {/* Auto-fill status */}
+          {s.detectionStatus && (
+            <div className="flex items-center gap-3 py-4 px-1 mb-4 border-b border-green-100 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center shrink-0">
+                <span
+                  className="material-symbols-outlined text-ios-green text-lg"
+                  style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}
                 >
-                  {s.detectionStatus}
-                </p>
-                {s.isAutoFilling && !isAutoFillComplete && (
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    Populating country, state, and city...
-                  </p>
-                )}
+                  check
+                </span>
               </div>
+              <p className="text-sm font-medium text-green-700">
+                {s.detectionStatus}
+              </p>
             </div>
           )}
 
@@ -398,112 +370,8 @@ export default function OnboardingStep3Combined() {
             </div>
           </section>
 
-          {/* ═══ SECTION 3: Country / State / City / ZIP ═══ */}
-          <section className="space-y-0 mb-6">
-            {/* Country — locked while auto-filling */}
-            <div
-              className={`border-b border-gray-200 relative ${
-                s.isAutoFilling ? "opacity-70" : ""
-              }`}
-            >
-              <SearchableSelect
-                id="country"
-                label="Country"
-                value={s.dropdowns.country}
-                options={s.dropdowns.countries.map((c) => ({
-                  value: c.isoCode,
-                  label: c.name,
-                }))}
-                onChange={s.dropdowns.setCountry}
-                placeholder="Search country..."
-                required
-                disabled={s.isAutoFilling}
-                autoComplete="country"
-              />
-              {s.isAutoFilling && s.dropdowns.country && (
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
-                  <div className="animate-spin h-3.5 w-3.5 border-[1.5px] border-hushh-blue border-t-transparent rounded-full" />
-                  <span className="text-[10px] text-gray-400 font-medium">
-                    GPS
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* State — locked while auto-filling */}
-            <div
-              className={`border-b border-gray-200 relative ${
-                s.isAutoFilling ? "opacity-70" : ""
-              }`}
-            >
-              <SearchableSelect
-                id="state"
-                label="State / Province"
-                value={s.dropdowns.state}
-                options={s.dropdowns.states.map((st) => ({
-                  value: st.isoCode,
-                  label: st.name,
-                }))}
-                onChange={s.dropdowns.setState}
-                placeholder={
-                  s.isAutoFilling && s.dropdowns.loadingStates
-                    ? "Loading states..."
-                    : "Search state..."
-                }
-                disabled={!s.dropdowns.country || s.isAutoFilling}
-                loading={s.dropdowns.loadingStates}
-                loadError={s.dropdowns.statesError}
-                onRetry={s.dropdowns.retryStates}
-                required
-                autoComplete="address-level1"
-              />
-              {s.isAutoFilling && s.dropdowns.loadingStates && (
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
-                  <div className="animate-spin h-3.5 w-3.5 border-[1.5px] border-hushh-blue border-t-transparent rounded-full" />
-                  <span className="text-[10px] text-gray-400 font-medium">
-                    Loading
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* City — locked while auto-filling */}
-            <div
-              className={`border-b border-gray-200 relative ${
-                s.isAutoFilling ? "opacity-70" : ""
-              }`}
-            >
-              <SearchableSelect
-                id="city"
-                label="City"
-                value={s.dropdowns.city}
-                options={s.dropdowns.cities.map((c) => ({
-                  value: c.name,
-                  label: c.name,
-                }))}
-                onChange={s.dropdowns.setCity}
-                placeholder={
-                  s.isAutoFilling && s.dropdowns.loadingCities
-                    ? "Loading cities..."
-                    : "Search city..."
-                }
-                disabled={!s.dropdowns.state || s.isAutoFilling}
-                loading={s.dropdowns.loadingCities}
-                loadError={s.dropdowns.citiesError}
-                onRetry={s.dropdowns.retryCities}
-                required
-                autoComplete="address-level2"
-              />
-              {s.isAutoFilling && s.dropdowns.loadingCities && (
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
-                  <div className="animate-spin h-3.5 w-3.5 border-[1.5px] border-hushh-blue border-t-transparent rounded-full" />
-                  <span className="text-[10px] text-gray-400 font-medium">
-                    Loading
-                  </span>
-                </div>
-              )}
-            </div>
-
+          {/* ═══ SECTION 3: ZIP Code ═══ */}
+          <section className="mb-6">
             {/* ZIP Code */}
             <div className="py-5 border-b border-gray-200">
               <div className="flex items-center gap-4">
