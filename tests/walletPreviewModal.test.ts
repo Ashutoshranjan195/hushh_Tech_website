@@ -258,7 +258,7 @@ describe("WalletCardPreviewModal", () => {
       '[data-testid="wallet-preview-profile-url"]'
     );
 
-    expect(profileLinkTile?.getAttribute("href")).toBeNull();
+    expect(profileLinkTile).toBeNull();
     expect(profileUrlDetails?.textContent).toContain("Shared soon");
   });
 });

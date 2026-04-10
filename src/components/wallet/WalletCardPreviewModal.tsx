@@ -2,7 +2,6 @@ import { useEffect, useState, type MouseEvent } from "react";
 import {
   Box,
   Button,
-  Divider,
   HStack,
   Modal,
   ModalBody,
@@ -175,18 +174,51 @@ export default function WalletCardPreviewModal({
         my={{ base: 0, md: 8 }}
         maxW={{ base: "100vw", md: "min(100vw - 2rem, 64rem)" }}
         borderRadius={{ base: 0, md: "28px" }}
-        bg="#F8F5EC"
+        bg="white"
         overflow="hidden"
       >
-        <ModalHeader pb={{ base: 1, md: 2 }} fontSize={{ base: "2xl", md: "3xl" }}>
-          Preview Card
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody px={{ base: 4, md: 6 }} pb={{ base: 6, md: 8 }}>
-          <VStack spacing={{ base: 4, md: 5 }} align="stretch">
-            <Text fontSize={{ base: "md", md: "lg" }} color="gray.600">
-              A preview of your Hushh Gold card.
-            </Text>
+        <ModalHeader display="none" />
+        <ModalCloseButton
+          top={4}
+          right={4}
+          w={10}
+          h={10}
+          borderRadius="full"
+          bg="gray.100"
+          _hover={{ bg: "gray.200" }}
+          color="gray.600"
+        />
+        <ModalBody px={6} pt={10} pb={8}>
+          <VStack spacing={5} align="stretch">
+            {/* Onboarding-style heading block */}
+            <Box>
+              <Text
+                fontSize="10px"
+                letterSpacing="0.2em"
+                textTransform="uppercase"
+                color="gray.400"
+                fontWeight="600"
+                mb={2}
+              >
+                YOUR CARD
+              </Text>
+              <Text
+                fontFamily="'Playfair Display', serif"
+                fontSize={{ base: "2.25rem", md: "2.75rem" }}
+                fontWeight="normal"
+                lineHeight="1.1"
+                letterSpacing="-0.02em"
+                color="gray.900"
+              >
+                Preview{" "}
+                <Text as="span" fontStyle="italic" color="gray.400">
+                  Card
+                </Text>
+              </Text>
+              <Text fontSize="sm" color="gray.500" mt={2}>
+                A preview of your Hushh Gold card.
+              </Text>
+            </Box>
 
             <Box perspective="1600px">
               <Box
@@ -380,103 +412,154 @@ export default function WalletCardPreviewModal({
               </Box>
             </Box>
 
-            <Box
-              display="grid"
-              gap={3}
-              gridTemplateColumns={{ base: "1fr", md: "repeat(2, minmax(0, 1fr))" }}
-              alignItems="stretch"
-            >
-              <Box
-                borderRadius="20px"
-                border="1px solid rgba(15,23,42,0.08)"
-                bg="white"
-                px={4}
+            {/* Details rows — onboarding border-bottom pattern */}
+            <VStack spacing={0} align="stretch">
+              <HStack
                 py={4}
+                borderBottom="1px solid"
+                borderColor="gray.200"
+                spacing={3}
               >
-                <HStack spacing={2} mb={2} color="#0B1120">
-                  <Eye size={16} />
-                  <Text fontWeight="600" fontSize="sm">
+                <Box
+                  w={10}
+                  h={10}
+                  borderRadius="full"
+                  bg="gray.100"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  flexShrink={0}
+                >
+                  <Eye size={18} color="#6B7280" />
+                </Box>
+                <Box flex={1} minW={0}>
+                  <Text fontSize="sm" fontWeight="600" color="gray.900">
                     Details
                   </Text>
-                </HStack>
-                <VStack spacing={1.5} align="stretch">
                   <Text
                     fontSize="xs"
-                    color="gray.700"
+                    color="gray.500"
+                    mt={0.5}
                     overflowWrap="anywhere"
                   >
                     ID · {preview.membershipId}
                   </Text>
                   <Text
                     fontSize="xs"
-                    color="gray.600"
+                    color="gray.500"
                     overflowWrap="anywhere"
                   >
                     Email · {preview.email}
                   </Text>
-                </VStack>
-              </Box>
-              <Box
-                as={hasPublicProfileUrl ? "a" : "div"}
-                href={hasPublicProfileUrl ? preview.profileUrl || undefined : undefined}
-                target={hasPublicProfileUrl ? "_blank" : undefined}
-                rel={hasPublicProfileUrl ? "noopener noreferrer" : undefined}
-                data-testid="wallet-preview-profile-link"
-                borderRadius="20px"
-                border="1px solid rgba(15,23,42,0.08)"
-                bg="white"
-                px={4}
-                py={4}
-                display="block"
-                transition="transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease"
-                cursor={hasPublicProfileUrl ? "pointer" : "not-allowed"}
-                opacity={hasPublicProfileUrl ? 1 : 0.72}
-                _hover={
-                  hasPublicProfileUrl
-                    ? {
-                        borderColor: "rgba(15,23,42,0.18)",
-                        boxShadow: "0 10px 26px rgba(15, 23, 42, 0.08)",
-                        transform: "translateY(-1px)",
-                      }
-                    : undefined
-                }
-              >
-                <HStack spacing={2} mb={2} color="#0B1120">
-                  <ExternalLink size={16} />
-                  <Text fontWeight="600" fontSize="sm">
-                    Profile
-                  </Text>
-                </HStack>
-                <Text
-                  data-testid="wallet-preview-profile-url"
-                  fontSize="xs"
-                  color="gray.600"
-                  overflowWrap="anywhere"
+                </Box>
+              </HStack>
+
+              {hasPublicProfileUrl ? (
+                <Box
+                  as="a"
+                  href={preview.profileUrl || undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="wallet-preview-profile-link"
+                  display="block"
+                  _hover={{ bg: "gray.50" }}
+                  transition="background 120ms ease"
+                  borderRadius="md"
+                  mx={-2}
+                  px={2}
                 >
-                  {profileLinkDescription}
-                </Text>
-              </Box>
-            </Box>
+                  <HStack
+                    py={4}
+                    borderBottom="1px solid"
+                    borderColor="gray.200"
+                    spacing={3}
+                  >
+                    <Box
+                      w={10}
+                      h={10}
+                      borderRadius="full"
+                      bg="gray.100"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      flexShrink={0}
+                    >
+                      <ExternalLink size={18} color="#6B7280" />
+                    </Box>
+                    <Box flex={1} minW={0}>
+                      <Text fontSize="sm" fontWeight="600" color="gray.900">
+                        Profile
+                      </Text>
+                      <Text
+                        data-testid="wallet-preview-profile-url"
+                        fontSize="xs"
+                        color="gray.500"
+                        mt={0.5}
+                        overflowWrap="anywhere"
+                      >
+                        {profileLinkDescription}
+                      </Text>
+                    </Box>
+                  </HStack>
+                </Box>
+              ) : (
+                <HStack
+                  py={4}
+                  borderBottom="1px solid"
+                  borderColor="gray.200"
+                  spacing={3}
+                  opacity={0.6}
+                >
+                  <Box
+                    w={10}
+                    h={10}
+                    borderRadius="full"
+                    bg="gray.100"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    flexShrink={0}
+                  >
+                    <ExternalLink size={18} color="#6B7280" />
+                  </Box>
+                  <Box flex={1} minW={0}>
+                    <Text fontSize="sm" fontWeight="600" color="gray.900">
+                      Profile
+                    </Text>
+                    <Text
+                      data-testid="wallet-preview-profile-url"
+                      fontSize="xs"
+                      color="gray.500"
+                      mt={0.5}
+                    >
+                      {profileLinkDescription}
+                    </Text>
+                  </Box>
+                </HStack>
+              )}
+            </VStack>
 
-            <Divider borderColor="blackAlpha.200" />
-
-            <VStack spacing={3} align="stretch">
+            {/* Wallet actions */}
+            <VStack spacing={3} align="stretch" pt={1}>
               {appleWalletSupported ? (
                 <Button
                   leftIcon={<FaApple />}
                   bg="#0B1120"
                   color="white"
-                  borderRadius="16px"
-                  h="48px"
+                  borderRadius="full"
+                  h="52px"
+                  fontSize="sm"
+                  fontWeight="600"
                   onClick={onAddToAppleWallet}
                   isLoading={isApplePassLoading}
                   loadingText="Opening..."
-                  _hover={{ bg: "#111827" }}
+                  _hover={{ bg: "#1a2332" }}
+                  _active={{ bg: "#0B1120", transform: "scale(0.98)" }}
                 >
                   Add to Apple Wallet
                 </Button>
               ) : (
-                <Text fontSize="sm" color="gray.600">
+                <Text fontSize="xs" color="gray.500">
                   {modalAppleSupportMessage}
                 </Text>
               )}
@@ -485,19 +568,23 @@ export default function WalletCardPreviewModal({
                 <Button
                   leftIcon={<FcGoogle />}
                   bg="white"
-                  color="#0B1120"
-                  border="1px solid rgba(15,23,42,0.12)"
-                  borderRadius="16px"
-                  h="48px"
+                  color="gray.900"
+                  border="1px solid"
+                  borderColor="gray.200"
+                  borderRadius="full"
+                  h="52px"
+                  fontSize="sm"
+                  fontWeight="600"
                   onClick={onAddToGoogleWallet}
                   isLoading={isGooglePassLoading}
                   loadingText="Opening..."
-                  _hover={{ bg: "#F8FAFC" }}
+                  _hover={{ bg: "gray.50", borderColor: "gray.300" }}
+                  _active={{ bg: "gray.100", transform: "scale(0.98)" }}
                 >
                   Add to Google Wallet
                 </Button>
               ) : (
-                <Text fontSize="sm" color="gray.600">
+                <Text fontSize="xs" color="gray.500">
                   {modalGoogleSupportMessage}
                 </Text>
               )}
