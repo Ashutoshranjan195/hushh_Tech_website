@@ -159,8 +159,7 @@ describe("AuthSessionProvider", () => {
     );
   });
 
-  // TODO: Fix race condition — getUser 401 resolves after getSession restores "authenticated"
-  it.skip("invalidates a stale persisted session and clears it locally", async () => {
+  it("invalidates a stale persisted session and clears it locally", async () => {
     mockGetSession.mockResolvedValue({
       data: { session: MOCK_SESSION },
       error: null,
@@ -172,6 +171,49 @@ describe("AuthSessionProvider", () => {
 
     await act(async () => {
       root.render(renderWithProvider(React.createElement(AuthHarness)));
+    });
+    await flush();
+
+    expect(container.querySelector('[data-testid="status"]')?.textContent).toBe(
+      "invalidated"
+    );
+    expect(container.querySelector('[data-testid="reason"]')?.textContent).toBe(
+      "expired"
+    );
+    expect(mockSignOut).toHaveBeenCalledWith({ scope: "local" });
+  });
+
+  it("validates the INITIAL_SESSION auth event before trusting it", async () => {
+    let authStateChangeCallback:
+      | ((event: string, nextSession: typeof MOCK_SESSION | null) => Promise<void> | void)
+      | null = null;
+
+    mockGetSession.mockResolvedValueOnce({
+      data: { session: null },
+      error: null,
+    });
+    mockGetSession.mockResolvedValue({
+      data: { session: MOCK_SESSION },
+      error: null,
+    });
+    mockGetUser.mockResolvedValue({
+      data: { user: null },
+      error: { status: 401, message: "JWT expired" },
+    });
+    mockOnAuthStateChange.mockImplementation((callback) => {
+      authStateChangeCallback = callback as typeof authStateChangeCallback;
+      return {
+        data: { subscription: { unsubscribe: unsubscribeMock } },
+      };
+    });
+
+    await act(async () => {
+      root.render(renderWithProvider(React.createElement(AuthHarness)));
+    });
+    await flush();
+
+    await act(async () => {
+      await authStateChangeCallback?.("INITIAL_SESSION", MOCK_SESSION);
     });
     await flush();
 
