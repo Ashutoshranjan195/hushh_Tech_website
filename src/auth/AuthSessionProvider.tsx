@@ -18,7 +18,6 @@ import {
   broadcastAuthEvent,
   clearLegacyAuthStorage,
   clearSupabaseSession,
-  getLocalSession,
   getValidatedSession,
   parseAuthBroadcastEvent,
   startUnifiedOAuth,
@@ -127,16 +126,24 @@ export const AuthSessionProvider: React.FC<{
     return nextSnapshot;
   }, [applySnapshot, clearLocalSession, supabase]);
 
-  // Boot: Instantly resolve from localStorage (no network call).
-  // This eliminates the 'booting' state almost immediately.
-  // onAuthStateChange below handles INITIAL_SESSION for the definitive state.
+  // Boot: Resolve the persisted session immediately and validate it before
+  // trusting it so stale tokens are cleared instead of briefly resurfacing.
+  // onAuthStateChange below handles INITIAL_SESSION with the same validation.
   useEffect(() => {
     const bootFromLocalStorage = async () => {
-      const localSnapshot = await getLocalSession(supabase);
-      applySnapshot(localSnapshot);
+      const settledSnapshot = await getValidatedSession(supabase);
+      if (settledSnapshot.status === "invalidated") {
+        await clearLocalSession(
+          "invalidated",
+          settledSnapshot.reason || "invalid_session"
+        );
+        return;
+      }
+
+      applySnapshot(settledSnapshot);
     };
     void bootFromLocalStorage();
-  }, [applySnapshot, supabase]);
+  }, [applySnapshot, clearLocalSession, supabase]);
 
   useEffect(() => {
     if (!supabase) {
@@ -151,6 +158,21 @@ export const AuthSessionProvider: React.FC<{
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, nextSession) => {
+      if (event === "INITIAL_SESSION") {
+        const settledSnapshot = await getValidatedSession(supabase);
+
+        if (settledSnapshot.status === "invalidated") {
+          await clearLocalSession(
+            "invalidated",
+            settledSnapshot.reason || "invalid_session"
+          );
+          return;
+        }
+
+        applySnapshot(settledSnapshot);
+        return;
+      }
+
       if (event === "SIGNED_OUT" || !nextSession) {
         const pendingState = pendingSignedOutStateRef.current;
         pendingSignedOutStateRef.current = null;
