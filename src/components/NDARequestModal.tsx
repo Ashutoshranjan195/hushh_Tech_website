@@ -18,15 +18,16 @@ import {
   Input,
   Flex,
   Checkbox,
-  Textarea,
 } from "@chakra-ui/react";
 import PhoneInput from "react-phone-input-2";
+import { useNavigate } from "react-router-dom";
+import type { Session } from "@supabase/supabase-js";
 import "react-phone-input-2/lib/style.css";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { requestFileAccess } from "../services/access/accessControlApi";
 
 interface NDARequestModalProps {
-  session: any; // Contains the logged-in user's session (including access_token)
+  session: Session | null; // Contains the logged-in user's session (including access_token)
   onSubmit: (result: string) => void;
   isOpen?: boolean; // Optional property for when used in a modal context
   onClose?: () => void; // Optional property for when used in a modal context
@@ -61,12 +62,12 @@ const InvestorProfilePage: React.FC<NDARequestModalProps> = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [investorType, setInvestorType] = useState("Individual");
-  const [metadata, setMetadata] = useState<any>({});
-  const [formErrors, setFormErrors] = useState<any>({});
+  const [metadata, setMetadata] = useState<Record<string, string>>({});
+  const [formErrors, setFormErrors] = useState<Record<string, string | null>>({});
   const [ndaConfirmed, setNdaConfirmed] = useState(false);
   const [ndaTermsAccepted, setNdaTermsAccepted] = useState(false);
-  const [showNdaDocModal, setShowNdaDocModal] = useState(false);
   const toast = useToast();
+  const navigate = useNavigate();
 
   // Handle modal close if component is used as a modal
   const handleClose = () => {
@@ -76,10 +77,10 @@ const InvestorProfilePage: React.FC<NDARequestModalProps> = ({
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setMetadata((prev: any) => ({ ...prev, [field]: value }));
+    setMetadata((prev) => ({ ...prev, [field]: value }));
     // Clear error for the field being changed
     if (formErrors[field]) {
-      setFormErrors((prevErrors: any) => ({ ...prevErrors, [field]: null }));
+      setFormErrors((prevErrors) => ({ ...prevErrors, [field]: null }));
     }
   };
 
@@ -152,6 +153,11 @@ const InvestorProfilePage: React.FC<NDARequestModalProps> = ({
         return;
     }
 
+    if (!session?.access_token) {
+        toast({ title: "Authentication Required", description: "You must be logged in to submit a request.", status: "error" });
+        return;
+    }
+
     console.log("Submitting NDA Request with metadata:", metadata);
     const formattedMetadata = { ...metadata };
     if (formattedMetadata.mobile_telephone) {
@@ -175,7 +181,7 @@ const InvestorProfilePage: React.FC<NDARequestModalProps> = ({
       // Toast messages based on response (existing logic)
       if (resData === "Approved" || (typeof resData === "string" && resData.startsWith("Requested permission"))) {
         toast({ title: "Request Submitted", description: "Your access request has been sent and is pending approval.", status: "success", duration: 4000, isClosable: true });
-        window.location.href = "/"; // Or a more appropriate page
+        navigate("/"); // Or a more appropriate page
         
         // Close modal if applicable after successful submission
         handleClose();
@@ -198,7 +204,7 @@ const InvestorProfilePage: React.FC<NDARequestModalProps> = ({
         
         // Redirect to profile page where NDA document modal can be shown
         // The profile page will handle showing the NDA document modal based on the status
-        window.location.href = "/profile";
+        navigate("/profile");
       } else {
         toast({ title: "Unexpected Response", description: `Received: ${resData}`, status: "error", duration: 4000, isClosable: true });
         onSubmit(resData);
@@ -542,7 +548,7 @@ const InvestorProfilePage: React.FC<NDARequestModalProps> = ({
               isChecked={ndaTermsAccepted}
               onChange={(e) => {
                 setNdaTermsAccepted(e.target.checked);
-                if (formErrors.ndaTermsAccepted) setFormErrors((prev: any) => ({...prev, ndaTermsAccepted: null}));
+                if (formErrors.ndaTermsAccepted) setFormErrors((prev) => ({...prev, ndaTermsAccepted: null}));
               }}
               mt={1}
             />

@@ -63,13 +63,11 @@ const AuthCallback: React.FC = () => {
         const error = searchParams.get('error');
         const errorDescription = searchParams.get('error_description');
         const code = searchParams.get('code');
-        console.info('[Hushh][AuthCallback] Callback hit', { type, hasCode: !!code, hasError: !!error, customRedirect });
 
         // If there's an error, display it
         if (error) {
           setVerificationStatus('error');
           setErrorMessage(errorDescription || 'An error occurred during verification');
-          console.error('[Hushh][AuthCallback] OAuth error', { error, errorDescription });
           return;
         }
 
@@ -80,10 +78,8 @@ const AuthCallback: React.FC = () => {
           if (exchangeError) {
             setVerificationStatus('error');
             setErrorMessage(exchangeError.message);
-            console.error('[Hushh][AuthCallback] Code exchange failed', exchangeError);
             return;
           }
-          console.info('[Hushh][AuthCallback] Code exchange succeeded, session created');
 
           // Clean the URL to avoid re-exchanging the same code on refresh
           const cleanUrl = window.location.origin + window.location.pathname;
@@ -132,12 +128,6 @@ const AuthCallback: React.FC = () => {
           .select('is_completed, current_step')
           .eq('user_id', user.id)
           .maybeSingle();
-
-        console.info('[Hushh][AuthCallback] Session restored', {
-          userId: user.id,
-          email: user.email,
-          onboardingFound: !!onboardingData,
-        });
 
         queueWelcomeToast(user.id);
         setVerificationStatus('success');
@@ -194,14 +184,14 @@ const AuthCallback: React.FC = () => {
                 size="lg"
                 onClick={() => navigate('/user-registration')}
               >
-                Set us your profile
+                Set up your profile
               </Button>
               <Button
                 variant="outline"
                 size="lg"
                 onClick={() => navigate('/community')}
               >
-                Checkout communnity posts
+                Check out community posts
               </Button>
             </Flex>
           </Flex>

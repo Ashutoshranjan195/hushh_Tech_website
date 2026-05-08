@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { FiMenu, FiX, FiChevronDown, FiUser, FiTrash2, FiChevronDown as FiArrowDown } from "react-icons/fi";
+import { FiMenu, FiX, FiChevronDown, FiUser, FiTrash2 } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { Image, useToast, useBreakpointValue, useDisclosure } from "@chakra-ui/react";
 import hushhLogo from "../components/images/Hushhogo.png";
@@ -50,15 +50,12 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [toastShown, setToastShown] = useState(false);
   const previousUserIdRef = useRef<string | null>(null);
-  const [careerDropdownOpen, setCareerDropdownOpen] = useState(false);
-  const [mobileCareerDropdownOpen, setMobileCareerDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const navigate = useNavigate();
   const location = useLocation();
   const drawerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const careerDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const [hushhCoins, setHushhCoins] = useState<number | null>(null);

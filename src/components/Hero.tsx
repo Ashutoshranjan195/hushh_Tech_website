@@ -211,7 +211,6 @@ export default function Hero() {
           loading: false,
         });
       } catch (error) {
-        console.error('Error checking user status:', error);
         setOnboardingStatus(prev => ({ ...prev, loading: false }));
       }
     }
@@ -229,7 +228,7 @@ export default function Hero() {
       return { text: "Complete Your Hushh Profile", action: () => navigate(FINANCIAL_LINK_ROUTE), loading: false };
     }
     if (onboardingStatus.loading) {
-      return { text: "Loading...", action: () => {}, loading: true };
+      return { text: "Loading...", action: () => undefined, loading: true };
     }
     if (onboardingStatus.hasProfile || onboardingStatus.isCompleted) {
       return { text: "View Your Profile", action: () => navigate("/hushh-user-profile"), loading: false };

@@ -8,9 +8,6 @@ import axios from "axios";
 // API configuration - Production API endpoint
 const API_ENDPOINT = "https://hushh-api-53407187172.us-central1.run.app/api/hushhtech-wrapper";
 
-console.log("=== API Configuration ===");
-console.log("API Endpoint:", API_ENDPOINT);
-
 interface UserData {
   first_name: string;
   last_name: string;
@@ -30,6 +27,7 @@ export default function UserRegistration() {
   const [error, setError] = useState<string | null>(null);
   const [api, contextHolder] = notification.useNotification();
   const [userEmail, setUserEmail] = useState("");
+  const [userId, setUserId] = useState("");
   
   // Form fields
   const [firstName, setFirstName] = useState("");
@@ -100,12 +98,6 @@ export default function UserRegistration() {
         investor_type: investorType,
       };
 
-      console.log("=== API Request Debug Info ===");
-      console.log("Final API Endpoint:", API_ENDPOINT);
-      console.log("Request Method: POST");
-      console.log("Request Payload:", JSON.stringify(userData, null, 2));
-      console.log("Current URL:", window.location.href);
-
       // Make the API request with explicit configuration
       const response = await axios({
         method: 'POST',
@@ -119,11 +111,6 @@ export default function UserRegistration() {
         // Explicitly disable proxy
         proxy: false,
       });
-      
-      console.log("=== API Response Debug Info ===");
-      console.log("Response Status:", response.status);
-      console.log("Response Headers:", response.headers);
-      console.log("Response Data:", response.data);
       
       // Extract and store user profile data from response
       if (response.data && response.data.user) {
@@ -145,8 +132,6 @@ export default function UserRegistration() {
         
         // Store user profile data in localStorage
         localStorage.setItem('hushhUserProfile', JSON.stringify(userProfile));
-        
-        console.log("User profile stored:", userProfile);
       }
 
       openNotification("Your profile has been created successfully!", "Success", 3);
@@ -155,33 +140,25 @@ export default function UserRegistration() {
       setTimeout(() => {
         navigate("/your-profile");
       }, 2000);
-    } catch (err: any) {
-      console.error("=== API Error Debug Info ===");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error("API Error:", err.message);
+      }
 
       
       // More detailed error handling
       let errorMessage = "An unexpected error occurred. Please try again later.";
       
-      if (err.response) {
+      if (axios.isAxiosError(err) && err.response) {
         // Server responded with error status
-        console.error("Error response status:", err.response.status);
-        console.error("Error response headers:", err.response.headers);
-        console.error("Error response data:", err.response.data);
-        console.error("Actual request URL:", err.response.config?.url);
-        
         errorMessage = `Registration failed (${err.response.status}): ${
           err.response.data?.message || 
           err.response.data?.error || 
           err.response.statusText ||
           'Server error'
         }`;
-      } else if (err.request) {
+      } else if (axios.isAxiosError(err) && err.request) {
         // Request was made but no response
-        console.error("No response received:", err.request);
-        console.error("Request URL that was attempted:", err.config?.url);
-        console.error("Request method:", err.config?.method);
-        console.error("Request headers:", err.config?.headers);
-        
         if (err.code === 'ECONNABORTED') {
           errorMessage = "Request timeout. Please check your internet connection and try again.";
         } else if (err.code === 'ERR_NETWORK') {
@@ -193,8 +170,7 @@ export default function UserRegistration() {
         }
       } else {
         // Something else happened
-        console.error("Request setup error:", err.message);
-        errorMessage = `Request error: ${err.message}`;
+        errorMessage = `Request error: ${err instanceof Error ? err.message : String(err)}`;
       }
       
       console.error("Final error message:", errorMessage);
