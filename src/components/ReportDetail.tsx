@@ -5,7 +5,6 @@ import {
   Heading,
   Text,
   SimpleGrid,
-  Image,
   Spinner,
   AspectRatio,
 } from '@chakra-ui/react'
