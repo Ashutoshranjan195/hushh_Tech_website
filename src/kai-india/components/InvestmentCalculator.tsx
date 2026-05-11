@@ -108,7 +108,7 @@ export const InvestmentCalculator: React.FC = () => {
                         }`}>
                             {p.label}
                         </span>
-                        <span className={`text-[9px] uppercase tracking-wider font-medium mt-0.5 transition-colors duration-300 hidden xs:block ${
+                        <span className={`text-[9px] uppercase tracking-wider font-medium mt-0.5 transition-colors duration-300 hidden sm:block ${
                             profile === p.id ? 'text-neutral-500' : 'text-neutral-500/70'
                         }`}>
                             {p.sub}
@@ -317,7 +317,7 @@ export const InvestmentCalculator: React.FC = () => {
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span className="text-[10px] text-neutral-500 uppercase tracking-wider font-bold">Total</span>
-                            <span className="text-lg font-bold text-white">₹{parseInt(amount).toLocaleString()}</span>
+                            <span className="text-lg font-bold text-white">₹{(Number(amount) || 0).toLocaleString()}</span>
                         </div>
                     </div>
 

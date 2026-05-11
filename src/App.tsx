@@ -25,6 +25,7 @@ import PrivacyPolicy from './pages/privacy-policy';
 import CareersPrivacyPolicy from './pages/career-privacy-policy';
 import CaliforniaPrivacyPolicy from './pages/california-privacy-policy';
 import EUUKPrivacyPolicy from './pages/eu-uk-privacy-policy';
+import TermsOfService from './pages/terms-of-service';
 import DeleteAccountPage from './pages/delete-account';
 import { ReactNode } from 'react';
 import Profile from './pages/profile';
@@ -78,6 +79,7 @@ import { AuthSessionProvider, useAuthSession } from './auth/AuthSessionProvider'
 import AuthRequiredRoute from './components/AuthRequiredRoute';
 import HushhHackathonPage from './pages/hushh-hackathon/ui';
 import MetricsPage from './pages/metrics';
+import NotFound from './pages/NotFound';
 
 const KaiIndiaApp = React.lazy(() => import('./kai-india/pages'));
 
@@ -165,6 +167,7 @@ function App() {
             <Route path="/about/philosophy" element={<Philosophy />} />
             <Route path="/Login" element={<LoginPage />} />
             <Route path="/Contact" element={<Contact />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/benefits" element={<BenefitsPage />} />
             <Route path='/services/consumers' element={<Consumers />} />
             <Route path='/services/business' element={<Business />} />
@@ -184,6 +187,8 @@ function App() {
             } />
             <Route path='/california-privacy-policy' element={<CaliforniaPrivacyPolicy />} />
             <Route path='/eu-uk-jobs-privacy-policy' element={<EUUKPrivacyPolicy />} />
+            <Route path='/terms' element={<TermsOfService />} />
+            <Route path='/terms-of-service' element={<TermsOfService />} />
             <Route path='/delete-account' element={
               <AuthRequiredRoute>
                 <DeleteAccountPage />
@@ -382,6 +387,8 @@ function App() {
             <Route path='/document-viewer' element={<DocumentViewerPage />} />
             {/* NDA Admin Page - Password protected view of all NDA agreements */}
             <Route path='/nda-admin' element={<NDAAdminPage />} />
+            {/* 404 Not Found - Must be last route */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ContentWrapper>
         {showFooter && <Footer />}
